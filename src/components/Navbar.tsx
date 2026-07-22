@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { portfolioData } from '../data/portfolioData';
+import { motion, AnimatePresence } from '../utils/motion';
+import { useApp } from '../context/AppContext';
 
 interface NavbarProps {
   activePage: 'home' | 'experience' | 'projects' | 'contact';
@@ -9,12 +10,13 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenCvModal }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, toggleTheme, language, toggleLanguage, t } = useApp();
 
   const navItems: Array<{ id: 'home' | 'experience' | 'projects' | 'contact'; label: string }> = [
-    { id: 'home', label: 'Overview' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'home', label: t.nav.overview },
+    { id: 'experience', label: t.nav.experience },
+    { id: 'projects', label: t.nav.projects },
+    { id: 'contact', label: t.nav.contact },
   ];
 
   const handleNavClick = (id: 'home' | 'experience' | 'projects' | 'contact') => {
@@ -24,85 +26,147 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenCv
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-[#101415]/85 backdrop-blur-md border-b border-[#45464d]/20 h-16 transition-all duration-300">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-[var(--nav-bg)] backdrop-blur-md border-b border-[var(--border-color)] h-16 transition-colors duration-300">
       <div className="max-w-[1120px] mx-auto px-6 flex justify-between items-center h-full">
         {/* Brand Logo */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
           onClick={() => handleNavClick('home')}
-          className="font-[#Playfair Display] font-serif text-2xl font-bold tracking-tight text-[#e0e3e5] hover:text-[#7bd0ff] transition-colors text-left focus:outline-none"
+          className="font-serif text-2xl font-bold tracking-tight text-[var(--text-main)] hover:text-[var(--bg-accent)] transition-colors flex items-center gap-2"
         >
-          {portfolioData.personal.brandName}
-        </button>
+          <span className="w-2.5 h-2.5 rounded-full bg-[var(--bg-accent)] shadow-[0_0_10px_var(--glow-color)]"></span>
+          {t.nav.brand}
+        </motion.button>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-8 font-sans text-sm tracking-wide">
+        {/* Desktop Navigation Links with Animated Pill */}
+        <div className="hidden md:flex items-center gap-1 font-sans text-sm tracking-wide bg-[var(--bg-card)]/80 p-1.5 rounded-full border border-[var(--border-color)]">
           {navItems.map((item) => {
             const isActive = activePage === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`py-1 transition-all duration-200 focus:outline-none ${
-                  isActive
-                    ? 'text-[#bec6e0] font-semibold border-b-2 border-[#bec6e0]'
-                    : 'text-[#c6c6cd] hover:text-[#e0e3e5] hover:text-[#7bd0ff]'
+                className={`relative px-5 py-1.5 rounded-full transition-colors text-xs font-bold focus:outline-none ${
+                  isActive ? 'text-[var(--text-accent-on)]' : 'text-[var(--text-sub)] hover:text-[var(--text-main)]'
                 }`}
               >
-                {item.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-active-pill"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    className="absolute inset-0 bg-[var(--bg-accent)] rounded-full z-0 shadow-md shadow-[var(--glow-color)]/20"
+                  />
+                )}
+                <span className="relative z-10">{item.label}</span>
               </button>
             );
           })}
         </div>
 
-        {/* Action Button */}
-        <div className="hidden md:flex items-center gap-4">
-          <button
-            onClick={onOpenCvModal}
-            className="bg-[#7bd0ff] text-[#001e2c] px-6 py-2 rounded-full font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-200 active:scale-95 hover:bg-[#c4e7ff] hover:shadow-lg hover:shadow-[#7bd0ff]/20"
+        {/* Controls: Language Toggle + Theme Toggle + Action Button */}
+        <div className="hidden md:flex items-center gap-3">
+          {/* Language Toggle Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={toggleLanguage}
+            title="Toggle Language (English / العربية)"
+            className="flex items-center gap-1.5 bg-[var(--bg-card)] text-[var(--text-main)] px-3.5 py-1.5 rounded-full border border-[var(--border-color)] text-xs font-bold transition-all hover:border-[var(--bg-accent)]"
           >
-            Download CV
-          </button>
+            <span className="material-symbols-outlined text-base text-[var(--bg-accent)]">translate</span>
+            <span>{language === 'en' ? 'عربي' : 'EN'}</span>
+          </motion.button>
+
+          {/* Theme Toggle Button (Sun / Moon) */}
+          <motion.button
+            whileHover={{ scale: 1.05, rotate: 15 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to Daylight Light Mode' : 'Switch to Nocturne Dark Mode'}
+            className="p-2 bg-[var(--bg-card)] text-[var(--text-main)] rounded-full border border-[var(--border-color)] flex items-center justify-center transition-all hover:border-[var(--bg-accent)] shadow-sm"
+          >
+            <span className="material-symbols-outlined text-lg">
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
+          </motion.button>
+
+          {/* Download CV Button */}
+          <motion.button
+            whileHover={{ scale: 1.05, boxShadow: '0px 0px 20px rgba(0, 85, 255, 0.4)' }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onOpenCvModal}
+            className="bg-[var(--bg-accent)] text-[var(--text-accent-on)] px-5 py-2 rounded-full font-sans text-xs font-bold uppercase tracking-wider transition-all shadow-md"
+          >
+            {t.nav.downloadCv}
+          </motion.button>
         </div>
 
-        {/* Mobile Hamburger Toggle */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle Navigation Menu"
-          className="md:hidden text-[#e0e3e5] p-2 hover:text-[#7bd0ff] focus:outline-none"
-        >
-          <span className="material-symbols-outlined text-2xl">
-            {mobileMenuOpen ? 'close' : 'menu'}
-          </span>
-        </button>
+        {/* Mobile Toggle Group */}
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={toggleLanguage}
+            className="px-2.5 py-1 text-xs font-bold bg-[var(--bg-card)] text-[var(--text-main)] border border-[var(--border-color)] rounded-lg"
+          >
+            {language === 'en' ? 'عربي' : 'EN'}
+          </button>
+
+          <button
+            onClick={toggleTheme}
+            className="p-1.5 text-[var(--text-main)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg"
+          >
+            <span className="material-symbols-outlined text-xl">
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle Navigation Menu"
+            className="text-[var(--text-main)] p-2 hover:text-[var(--bg-accent)] focus:outline-none"
+          >
+            <span className="material-symbols-outlined text-2xl">
+              {mobileMenuOpen ? 'close' : 'menu'}
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-[#191c1e] border-b border-[#45464d]/30 px-6 py-6 flex flex-col gap-4 animate-in slide-in-from-top duration-300">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className={`text-left py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
-                activePage === item.id
-                  ? 'bg-[#0f172a] text-[#7bd0ff] font-semibold'
-                  : 'text-[#c6c6cd] hover:bg-[#1d2022] hover:text-[#e0e3e5]'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              onOpenCvModal();
-            }}
-            className="w-full mt-2 bg-[#7bd0ff] text-[#001e2c] py-3 rounded-xl text-center font-sans text-xs font-bold uppercase tracking-wider shadow-lg shadow-[#7bd0ff]/10 active:scale-95"
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden bg-[var(--bg-card)] border-b border-[var(--border-color)] px-6 py-6 flex flex-col gap-3 shadow-2xl"
           >
-            Download CV
-          </button>
-        </div>
-      )}
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`text-left rtl:text-right py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
+                  activePage === item.id
+                    ? 'bg-[var(--bg-accent)] text-[var(--text-accent-on)] font-bold shadow-lg'
+                    : 'text-[var(--text-sub)] hover:bg-[var(--bg-card-sub)] hover:text-[var(--text-main)]'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenCvModal();
+              }}
+              className="w-full mt-2 bg-[var(--bg-accent)] text-[var(--text-accent-on)] py-3 rounded-xl text-center font-sans text-xs font-bold uppercase tracking-wider shadow-lg active:scale-95"
+            >
+              {t.nav.downloadCv}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

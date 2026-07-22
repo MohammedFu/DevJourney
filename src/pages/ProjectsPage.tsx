@@ -1,15 +1,20 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from '../utils/motion';
 import { portfolioData } from '../data/portfolioData';
 import type { ProjectItem } from '../data/portfolioData';
+import { ProjectModal } from '../components/ProjectModal';
+import { useApp } from '../context/AppContext';
 
 interface ProjectsPageProps {
   onNavigate: (page: 'home' | 'experience' | 'projects' | 'contact') => void;
 }
 
 export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
+  const { t, isRtl } = useApp();
   const [selectedCategory, setSelectedCategory] = useState<
     'All' | 'Mobile Apps' | 'Web Systems' | 'Full Stack'
   >('All');
+  const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(null);
 
   const categories: Array<'All' | 'Mobile Apps' | 'Web Systems' | 'Full Stack'> = [
     'All',
@@ -24,123 +29,167 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
       : portfolioData.projects.filter((p) => p.category === selectedCategory);
 
   return (
-    <div className="animate-in fade-in duration-300 pt-12 pb-24 max-w-[1120px] mx-auto px-6 text-left">
+    <div className="pt-6 pb-24 max-w-[1120px] mx-auto px-6 text-left rtl:text-right">
       {/* Hero Header */}
-      <section className="mb-14">
-        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#e0e3e5] mb-4">
-          Interactive Project Gallery
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-12"
+      >
+        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[var(--text-main)] mb-4">
+          {t.projectsPage.title}
         </h1>
-        <p className="text-base sm:text-lg text-[#c6c6cd] max-w-2xl leading-relaxed">
-          A curated showcase of engineering solutions built across Flutter, React Native, Go, PHP/Laravel, and TypeScript, extracted directly from public GitHub repositories.
+        <p className="text-base sm:text-lg text-[var(--text-sub)] max-w-2xl leading-relaxed">
+          {t.projectsPage.subtitle}
         </p>
-      </section>
+      </motion.section>
 
-      {/* Category Filter Pills */}
-      <div className="flex flex-wrap items-center gap-3 mb-12 border-b border-[#45464d]/20 pb-6">
-        <span className="text-xs uppercase tracking-widest text-[#c6c6cd] font-semibold mr-2">
-          Filter:
+      {/* Category Filter Pills with Layout Animation */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="flex flex-wrap items-center gap-3 mb-10 border-b border-[var(--border-color)] pb-6"
+      >
+        <span className="text-xs uppercase tracking-widest text-[var(--text-sub)] font-bold mr-2 rtl:ml-2 rtl:mr-0">
+          {t.projectsPage.filter}
         </span>
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-5 py-2 rounded-full text-xs font-semibold transition-all duration-200 focus:outline-none ${
-              selectedCategory === cat
-                ? 'bg-[#7bd0ff] text-[#001e2c] shadow-lg shadow-[#7bd0ff]/20'
-                : 'bg-[#191c1e] text-[#c6c6cd] hover:bg-[#272a2c] hover:text-[#e0e3e5] border border-[#45464d]/20'
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+        {categories.map((cat) => {
+          const isActive = selectedCategory === cat;
+          const label = t.projectsPage.categories[cat] || cat;
+          return (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`relative px-5 py-2 rounded-full text-xs font-bold transition-colors focus:outline-none ${
+                isActive
+                  ? 'text-[var(--text-accent-on)]'
+                  : 'text-[var(--text-sub)] hover:text-[var(--text-main)] bg-[var(--bg-card)] border border-[var(--border-color)]'
+              }`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="activeCategoryPill"
+                  transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                  className="absolute inset-0 bg-[var(--bg-accent)] rounded-full z-0 shadow-lg shadow-[var(--glow-color)]/20"
+                />
+              )}
+              <span className="relative z-10">{label}</span>
+            </button>
+          );
+        })}
+      </motion.div>
 
-      {/* Projects Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredProjects.map((project: ProjectItem) => (
-          <div
-            key={project.id}
-            className="glass-card rounded-2xl overflow-hidden group flex flex-col h-full border border-[#45464d]/20 bg-[#191c1e]/60"
-          >
-            {/* Project Image Header */}
-            <div className="relative aspect-video w-full overflow-hidden bg-[#1d2022]">
-              <img
-                src={project.imageUrl}
-                alt={project.imageAlt}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute top-3 right-3 bg-[#0b0f10]/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#7bd0ff]/30 text-[11px] font-semibold text-[#7bd0ff]">
-                {project.language}
+      {/* Projects Grid with AnimatePresence */}
+      <motion.section layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <AnimatePresence mode="popLayout">
+          {filteredProjects.map((project: ProjectItem) => (
+            <motion.div
+              key={project.id}
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.4 }}
+              whileHover={{ y: -6 }}
+              onClick={() => setActiveModalProject(project)}
+              className="glass-card rounded-2xl overflow-hidden group flex flex-col h-full border border-[var(--border-color)] bg-[var(--bg-card)] shadow-xl cursor-pointer"
+            >
+              {/* Project Image Header */}
+              <div className="relative aspect-video w-full overflow-hidden bg-[var(--bg-card-sub)]">
+                <img
+                  src={project.imageUrl}
+                  alt={project.imageAlt}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute top-3 right-3 rtl:left-3 rtl:right-auto bg-[var(--bg-card)]/90 backdrop-blur-md px-3 py-1 rounded-full border border-[var(--border-color)] text-[11px] font-bold text-[var(--text-accent)] shadow-sm">
+                  {project.language}
+                </div>
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                  <span className="bg-[var(--bg-accent)] text-[var(--text-accent-on)] px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg">
+                    <span className="material-symbols-outlined text-base">visibility</span> {t.projectsPage.quickView}
+                  </span>
+                </div>
               </div>
-            </div>
 
-            {/* Card Content */}
-            <div className="p-7 flex flex-col flex-grow">
-              <h3 className="font-serif text-xl font-bold text-[#e0e3e5] mb-2 group-hover:text-[#7bd0ff] transition-colors">
-                {project.title}
-              </h3>
-              <p className="text-sm text-[#c6c6cd] leading-relaxed mb-6 flex-grow">
-                {project.description}
-              </p>
+              {/* Card Content */}
+              <div className="p-7 flex flex-col flex-grow">
+                <h3 className="font-serif text-xl font-bold text-[var(--text-main)] mb-2 group-hover:text-[var(--text-accent)] transition-colors">
+                  {project.title}
+                </h3>
+                <p className="text-sm text-[var(--text-sub)] leading-relaxed mb-6 flex-grow">
+                  {project.description}
+                </p>
 
-              {/* Technologies */}
-              <div className="flex flex-wrap gap-1.5 mb-8">
-                {project.technologies.map((tech, idx) => (
+                {/* Technologies */}
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {project.technologies.map((tech, idx) => (
+                    <span
+                      key={idx}
+                      className="bg-[var(--bg-card-sub)] text-[var(--text-sub)] px-2.5 py-1 rounded-md text-[11px] font-medium border border-[var(--border-color)]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Card Footer Links */}
+                <div className="flex justify-between items-center border-t border-[var(--border-color)] pt-4 mt-auto">
                   <span
-                    key={idx}
-                    className="bg-[#272a2c] text-[#bec6e0] px-2.5 py-1 rounded-md text-[11px] font-medium"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(project.githubUrl, '_blank', 'noopener,noreferrer');
+                    }}
+                    className="flex items-center gap-1.5 text-[var(--text-accent)] font-bold text-xs hover:underline"
                   >
-                    {tech}
+                    {t.projectsPage.repoCode}
+                    <span className={`material-symbols-outlined text-base ${isRtl ? 'rotate-180' : ''}`}>
+                      arrow_outward
+                    </span>
                   </span>
-                ))}
-              </div>
-
-              {/* Card Footer Links */}
-              <div className="flex justify-between items-center border-t border-[#45464d]/20 pt-5 mt-auto">
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-[#7bd0ff] font-semibold text-xs hover:underline"
-                >
-                  View Code Repository
-                  <span className="material-symbols-outlined text-base">
-                    arrow_outward
+                  <span className="text-[var(--text-sub)] group-hover:text-[var(--text-accent)] transition-colors">
+                    <span className="material-symbols-outlined text-xl">code</span>
                   </span>
-                </a>
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Source Code"
-                  className="text-[#c6c6cd] hover:text-[#e0e3e5] transition-colors"
-                >
-                  <span className="material-symbols-outlined text-xl">code</span>
-                </a>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </section>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.section>
 
       {/* CTA Conversation Section */}
-      <section className="mt-24 text-center border-t border-[#45464d]/20 pt-16">
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mt-24 text-center border-t border-[var(--border-color)] pt-16"
+      >
         <div className="max-w-2xl mx-auto space-y-6">
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#e0e3e5]">
-            Have a project or role in mind?
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[var(--text-main)]">
+            {t.projectsPage.ctaTitle}
           </h2>
-          <p className="text-base text-[#c6c6cd] leading-relaxed">
-            I am currently open for full-time engineering roles, software development opportunities, and selective tech consulting. Let's build robust systems together.
+          <p className="text-base text-[var(--text-sub)] leading-relaxed">
+            {t.projectsPage.ctaSubtitle}
           </p>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05, boxShadow: '0px 0px 25px rgba(0, 85, 255, 0.3)' }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => onNavigate('contact')}
-            className="inline-flex items-center gap-2 bg-[#7bd0ff] text-[#001e2c] px-8 py-4 rounded-full font-semibold text-xs uppercase tracking-widest hover:bg-[#c4e7ff] transition-all duration-300 shadow-xl shadow-[#7bd0ff]/20 active:scale-95"
+            className="inline-flex items-center gap-2 bg-[var(--bg-accent)] text-[var(--text-accent-on)] px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest transition-all shadow-lg"
           >
-            Start a Conversation
-            <span className="material-symbols-outlined text-base">arrow_forward</span>
-          </button>
+            {t.projectsPage.ctaButton}
+            <span className={`material-symbols-outlined text-base ${isRtl ? 'rotate-180' : ''}`}>arrow_forward</span>
+          </motion.button>
         </div>
-      </section>
+      </motion.section>
+
+      {/* Project Modal Preview */}
+      <ProjectModal
+        project={activeModalProject}
+        onClose={() => setActiveModalProject(null)}
+      />
     </div>
   );
 };

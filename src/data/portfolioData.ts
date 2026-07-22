@@ -52,7 +52,7 @@ export const portfolioData = {
     gitHub: 'https://github.com/MohammedFu',
     status: 'Available for Developer & Lead Roles',
     summary:
-      'Dedicated Software Developer with a strong background in developing custom enterprise applications. Skilled in system integration, application performance optimization, and database architecture. Proficient across Flutter, React Native, Go, TypeScript, PHP/Laravel, and SQL databases, with a passion for delivering high-impact, user-centric solutions.',
+      'Dedicated Software Developer with strong experience in building high-performance mobile and enterprise applications. Expert in Kotlin Compose, Kotlin Multiplatform (KMP), Kotlin Native, React Native, and Flutter, alongside Go, TypeScript, PHP/Laravel, and enterprise SQL databases.',
     stats: {
       projectsShipped: '15+',
       systemUptime: '99.9%',
@@ -63,12 +63,14 @@ export const portfolioData = {
 
   skills: {
     languages: [
-      'Flutter',
+      'Kotlin Compose',
+      'Kotlin Multiplatform (KMP)',
+      'Kotlin Native',
       'React Native',
+      'Flutter',
       'Go',
       'TypeScript',
       'JavaScript',
-      'Kotlin Native',
       'Java Native',
       'PHP',
       'Laravel',
@@ -80,10 +82,10 @@ export const portfolioData = {
     ],
     categories: [
       {
-        title: 'Mobile & Cross-Platform',
+        title: 'Mobile & Multiplatform',
         icon: 'smartphone',
-        description: 'Building native-grade mobile applications with Flutter, React Native, Kotlin & Java.',
-        skills: ['Flutter', 'React Native', 'Kotlin', 'Java', 'Android SDK']
+        description: 'Building native and cross-platform mobile systems using Jetpack Compose, KMP, Kotlin Native, React Native & Flutter.',
+        skills: ['Kotlin Compose', 'Kotlin Multiplatform', 'Kotlin Native', 'React Native', 'Flutter', 'Android SDK']
       },
       {
         title: 'Backend & Cloud Infrastructure',
@@ -132,8 +134,8 @@ export const portfolioData = {
       period: 'April 2025 – Present',
       isCurrent: true,
       description:
-        'Serving as Project Manager for an enterprise chatting app and Server Administrator for the notification push proxy infrastructure, ensuring high delivery throughput and 99.9% uptime.',
-      technologies: ['Flutter', 'Go', 'Push Notification Proxy', 'Server Administration', 'Project Management']
+        'Serving as Project Manager and Senior Mobile Engineer for enterprise applications leveraging Kotlin Compose, React Native, and Flutter, with Go backend push proxy server management.',
+      technologies: ['Kotlin Compose', 'React Native', 'Flutter', 'Go', 'Push Notification Proxy', 'Project Management']
     },
     {
       id: 'exp-2',
@@ -188,7 +190,7 @@ export const portfolioData = {
       institution: 'International University of Technology Twintech',
       period: 'October 2021 – February 2025',
       grade: 'GPA: 3.26 / 4.00',
-      details: 'Specialized in Software Engineering, Database Systems, Enterprise Architecture, and Business Analytics.'
+      details: 'Specialized in Software Engineering, Mobile Architecture (Kotlin Compose, KMP), Database Systems, Enterprise Architecture, and Business Analytics.'
     },
     {
       id: 'edu-2',
@@ -243,14 +245,14 @@ export const portfolioData = {
       id: 'proj-1',
       title: 'LM-E-mart Mobile SaaS App',
       description:
-        'Specialized mobile extension of the LM-E-mart Multi-Tenancy eCommerce SaaS platform. Built with Flutter, enabling individual vendors to launch dedicated storefronts with full inventory and checkout integration.',
+        'Specialized mobile extension of the LM-E-mart Multi-Tenancy eCommerce SaaS platform. Built with Flutter & Kotlin Compose modules, enabling individual vendors to launch dedicated storefronts.',
       category: 'Mobile Apps',
-      language: 'Dart / Flutter',
-      technologies: ['Flutter', 'Dart', 'SaaS Multi-Tenancy', 'REST API', 'State Management'],
+      language: 'Dart / Flutter / Kotlin',
+      technologies: ['Flutter', 'Kotlin Compose', 'SaaS Multi-Tenancy', 'REST API', 'State Management'],
       githubUrl: 'https://github.com/MohammedFu/LM-E-mart-mobile-app',
       featured: true,
       imageAlt: 'SaaS multi-tenancy mobile storefront preview showing modern product layout and smooth dark mode styling',
-      imageUrl: 'https://images.unsplash.com/photo-1556742049-0a67daf40955?auto=format&fit=crop&w=800&q=80'
+      imageUrl: '/images/project-1.png'
     },
     {
       id: 'proj-2',
@@ -263,7 +265,7 @@ export const portfolioData = {
       githubUrl: 'https://github.com/MohammedFu',
       featured: true,
       imageAlt: 'Academic quality assurance web analytics dashboard with metrics, evaluation charts, and audit workflow status',
-      imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'
+      imageUrl: '/images/project-2.png'
     },
     {
       id: 'proj-3',
@@ -276,7 +278,7 @@ export const portfolioData = {
       githubUrl: 'https://github.com/MohammedFu/event-booking-system',
       featured: true,
       imageAlt: 'Event and wedding multi-service booking mobile app interface displaying venue listings and photographer packages',
-      imageUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80'
+      imageUrl: '/images/project-3.png'
     },
     {
       id: 'proj-4',
@@ -289,7 +291,7 @@ export const portfolioData = {
       githubUrl: 'https://github.com/MohammedFu/LM-Coffee-Mobile-Web-Coffee-Shop',
       featured: false,
       imageAlt: 'LM Coffee mobile app UI displaying specialty brews, espresso customizations, and checkout modal',
-      imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80'
+      imageUrl: '/images/project-4.png'
     },
     {
       id: 'proj-5',
@@ -302,7 +304,7 @@ export const portfolioData = {
       githubUrl: 'https://github.com/MohammedFu/designer-store',
       featured: false,
       imageAlt: 'Interactive fashion dress designer web tool with color pickers and real-time apparel rendering',
-      imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80'
+      imageUrl: '/images/project-5.png'
     },
     {
       id: 'proj-6',
@@ -315,7 +317,7 @@ export const portfolioData = {
       githubUrl: 'https://github.com/MohammedFu/Expense_Tracker_App',
       featured: false,
       imageAlt: 'Expense tracker mobile app screen displaying category breakdown charts and transaction history',
-      imageUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80'
+      imageUrl: '/images/project-6.png'
     },
     {
       id: 'proj-7',
@@ -323,12 +325,12 @@ export const portfolioData = {
       description:
         'Clean architecture mobile application template leveraging React Native, Expo, and TypeScript to demonstrate high-performance data CRUD operations.',
       category: 'Full Stack',
-      language: 'TypeScript',
+      language: 'TypeScript / React Native',
       technologies: ['React Native', 'Expo', 'TypeScript', 'REST Client'],
       githubUrl: 'https://github.com/MohammedFu/CrudApp',
       featured: false,
       imageAlt: 'Cross-platform mobile CRUD app displaying structured lists and item edit modals',
-      imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80'
+      imageUrl: '/images/project-7.png'
     }
   ] as ProjectItem[]
 };
