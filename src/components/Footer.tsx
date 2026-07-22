@@ -1,65 +1,61 @@
+import React from 'react';
 import { portfolioData } from '../data/portfolioData';
+import { useApp } from '../context/AppContext';
 
 interface FooterProps {
   onNavigate: (page: 'home' | 'experience' | 'projects' | 'contact') => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const currentYear = new Date().getFullYear();
+  const { t } = useApp();
 
   return (
-    <footer className="w-full py-12 bg-[#0b0f10] border-t border-[#45464d]/10">
-      <div className="max-w-[1120px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="flex flex-col items-center md:items-start gap-2">
-          <span className="font-serif text-xl font-bold text-[#e0e3e5]">
-            {portfolioData.personal.brandName}
+    <footer className="border-t border-[var(--border-color)] bg-[var(--bg-app)] py-12 transition-colors duration-300">
+      <div className="max-w-[1120px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="flex items-center gap-3">
+          <span className="font-serif text-lg font-bold text-[var(--text-main)]">{t.nav.brand}</span>
+          <span className="text-xs text-[var(--text-sub)]">
+            © {new Date().getFullYear()} {portfolioData.personal.name}. All rights reserved.
           </span>
-          <p className="text-xs text-[#c6c6cd] text-center md:text-left">
-            © {currentYear} {portfolioData.personal.name}. Built with precision, React &amp; Tailwind CSS.
-          </p>
         </div>
 
-        <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-[#c6c6cd]">
+        <div className="flex items-center gap-6 text-xs text-[var(--text-sub)] font-medium">
           <button
-            onClick={() => onNavigate('home')}
-            className="hover:text-[#7bd0ff] transition-colors focus:outline-none"
+            onClick={() => {
+              onNavigate('home');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="hover:text-[var(--text-main)] transition-colors"
           >
-            Overview
+            {t.nav.overview}
           </button>
           <button
-            onClick={() => onNavigate('experience')}
-            className="hover:text-[#7bd0ff] transition-colors focus:outline-none"
+            onClick={() => {
+              onNavigate('projects');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="hover:text-[var(--text-main)] transition-colors"
           >
-            Experience
+            {t.nav.projects}
           </button>
           <button
-            onClick={() => onNavigate('projects')}
-            className="hover:text-[#7bd0ff] transition-colors focus:outline-none"
+            onClick={() => {
+              onNavigate('experience');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="hover:text-[var(--text-main)] transition-colors"
           >
-            Projects
+            {t.nav.experience}
           </button>
           <button
-            onClick={() => onNavigate('contact')}
-            className="hover:text-[#7bd0ff] transition-colors focus:outline-none"
+            onClick={() => {
+              onNavigate('contact');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="hover:text-[var(--text-main)] transition-colors"
           >
-            Contact
+            {t.nav.contact}
           </button>
-          <a
-            href={portfolioData.personal.linkedIn}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#7bd0ff] transition-colors"
-          >
-            LinkedIn
-          </a>
-          <a
-            href={portfolioData.personal.gitHub}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#7bd0ff] transition-colors"
-          >
-            GitHub
-          </a>
         </div>
       </div>
     </footer>
