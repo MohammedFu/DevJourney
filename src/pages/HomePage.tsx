@@ -34,110 +34,115 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
   };
 
   return (
-    <div className="pt-6 pb-16">
+    <div className="pt-24 pb-20 relative">
+      {/* Background Aurora Blur Blobs */}
+      <div className="aurora-blur top-[-100px] left-[-100px]"></div>
+      <div className="aurora-blur bottom-[10%] right-[-100px] opacity-70"></div>
+
       {/* Hero Section */}
-      <section className="max-w-[1120px] mx-auto px-6 min-h-[82vh] flex flex-col md:flex-row items-center gap-12 py-12 md:py-20">
+      <section className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center min-h-[75vh] py-10">
         {/* Text Content */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex-1 space-y-7 order-2 md:order-1 text-left rtl:text-right"
+          className="lg:col-span-7 order-2 lg:order-1 text-left rtl:text-right"
         >
           {/* Status Badge */}
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[var(--bg-accent-sub)] border border-[var(--border-color)] shadow-md">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--bg-accent)] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[var(--bg-accent)]"></span>
-            </span>
-            <span className="text-xs font-bold text-white uppercase tracking-widest">
-              {t.hero.status}
-            </span>
+          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary mb-6">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            <span className="text-label-sm font-label-sm uppercase tracking-widest">{t.hero.status}</span>
           </motion.div>
 
-          {/* Main Serif Headline with Dynamic Typewriter */}
-          <motion.h1 variants={itemVariants} className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[var(--text-main)] leading-[1.15]">
-            {t.hero.hi} <span className="text-[var(--text-accent)]">{t.hero.name}</span>, {t.hero.building} <br />
-            <TypewriterText words={t.hero.typewriter} />
+          {/* Line 1: Main Headline with Smaller Greeting & Prominent Animated Name (Extra Bottom Spacing for Arabic Descenders) */}
+          <motion.h1 variants={itemVariants} className="font-headline-xl mb-2 tracking-tight leading-relaxed flex flex-wrap items-baseline gap-x-3 pb-3">
+            <span className="text-lg sm:text-xl md:text-2xl lg:text-[26px] text-on-surface-variant font-medium">
+              {t.hero.hi}
+            </span>
+            <span className="hero-gradient text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-bold pb-2 inline-block">
+              <TypewriterText words={[t.hero.name]} />
+            </span>
           </motion.h1>
 
+          {/* Line 2: Separate Line for Title / Building Text */}
+          <motion.div variants={itemVariants} className="text-on-surface-variant text-headline-lg lg:text-[32px] font-headline font-semibold mb-6">
+            {t.hero.building}
+          </motion.div>
+
           {/* Intro Description */}
-          <motion.p variants={itemVariants} className="text-base sm:text-lg text-[var(--text-sub)] max-w-xl leading-relaxed">
+          <motion.p variants={itemVariants} className="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mb-10">
             {t.hero.summary}
           </motion.p>
 
           {/* Action Buttons */}
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 pt-2">
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
             <motion.button
-              whileHover={{ scale: 1.04, boxShadow: '0px 0px 25px rgba(0, 85, 255, 0.4)' }}
-              whileTap={{ scale: 0.96 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onOpenCvModal}
-              className="group flex items-center justify-center gap-2.5 bg-[var(--bg-accent)] text-[var(--text-accent-on)] px-8 py-4 rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-lg"
+              className="primary-btn-gradient text-on-primary px-8 py-4 rounded-lg font-bold text-label-md font-label-md shadow-lg shadow-primary/20 hover:brightness-110 hover:shadow-primary/30 transition-all flex items-center gap-2 cursor-pointer"
             >
               {t.hero.downloadCv}
-              <span className="material-symbols-outlined text-xl transition-transform group-hover:translate-y-0.5">
-                download
-              </span>
+              <span className="material-symbols-outlined text-xl">download</span>
             </motion.button>
 
             <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onNavigate('projects')}
-              className="flex items-center justify-center gap-2.5 border border-[var(--border-color)] hover:border-[var(--bg-accent)] bg-[var(--bg-card)] px-8 py-4 rounded-full font-bold text-xs uppercase tracking-wider text-[var(--text-main)] transition-all shadow-sm"
+              className="border border-outline-variant px-8 py-4 rounded-lg font-bold text-label-md font-label-md text-primary hover:bg-white/5 transition-all flex items-center gap-2 cursor-pointer"
             >
               {t.hero.viewWork}
-              <span className={`material-symbols-outlined text-xl transition-transform ${isRtl ? 'rotate-180' : 'group-hover:translate-x-1'}`}>
+              <span className={`material-symbols-outlined text-xl ${isRtl ? 'rotate-180' : ''}`}>
                 arrow_forward
               </span>
             </motion.button>
           </motion.div>
         </motion.div>
 
-        {/* Headshot / Visual Card Area */}
+        {/* Profile Portrait with Bento Accent Frame */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-          className="flex-1 w-full md:w-auto flex justify-center order-1 md:order-2"
+          className="lg:col-span-5 order-1 lg:order-2 flex justify-center lg:justify-end"
         >
-          <div className="relative w-full aspect-square max-w-[420px]">
-            {/* Background Accent Glow */}
-            <div className="absolute -inset-6 bg-gradient-to-r from-[var(--bg-accent)]/20 to-transparent rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-
-            {/* Image Container */}
+          <div className="relative group w-full max-w-[420px]">
+            {/* Glassy Frame Glow */}
+            <div className="absolute -inset-4 bg-gradient-to-tr from-primary/20 to-secondary/20 blur-2xl rounded-[40px] group-hover:opacity-100 transition-opacity"></div>
             <motion.div
               whileHover={{ scale: 1.02, rotateY: 3, rotateX: -3 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="relative z-10 w-full h-full rounded-3xl overflow-hidden border border-[var(--border-color)] shadow-2xl bg-[var(--bg-card)] group"
+              className="relative glass-card p-4 rounded-[40px] overflow-hidden"
             >
               <img
                 src="/images/profile.jpg"
-                alt="Mohammed Fuad Al_Sanhani Professional Software Engineer"
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                alt={portfolioData.personal.name}
+                className="w-full h-[400px] md:h-[460px] object-cover rounded-[32px]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-app)] via-transparent to-transparent opacity-40 group-hover:opacity-10 transition-opacity"></div>
             </motion.div>
 
-            {/* Experience Floating Badge */}
+            {/* Floating Stats Card */}
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.5 }}
               whileHover={{ y: -4 }}
-              className="absolute -bottom-6 -right-4 rtl:-left-4 rtl:right-auto p-5 rounded-2xl bg-[var(--bg-card)] backdrop-blur-md border border-[var(--border-color)] shadow-2xl z-20 hidden sm:block text-left rtl:text-right"
+              className="absolute -bottom-6 -left-6 rtl:-right-6 rtl:left-auto glass-card p-6 rounded-2xl border border-white/10 shadow-2xl z-20 hidden sm:block text-left rtl:text-right"
             >
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-[var(--bg-accent-sub)] rounded-xl border border-[var(--border-color)]">
-                  <span className="material-symbols-outlined text-[var(--bg-accent)] text-2xl">
-                    terminal
+                <div className="bg-primary/20 p-3 rounded-xl">
+                  <span className="material-symbols-outlined text-primary text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+                    deployed_code
                   </span>
                 </div>
                 <div>
-                  <p className="text-[11px] text-[var(--text-sub)] font-bold uppercase tracking-wider">{t.hero.expTitle}</p>
-                  <p className="font-serif text-xl font-bold text-[var(--text-main)]">
+                  <div className="text-headline-md font-headline-md text-primary leading-tight">
                     {t.hero.expYears}
-                  </p>
+                  </div>
+                  <div className="text-label-sm font-label-sm text-on-surface-variant">
+                    {t.hero.expTitle}
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -145,8 +150,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
         </motion.div>
       </section>
 
-      {/* Core Expertise Section (Bento Grid) */}
-      <section className="max-w-[1120px] mx-auto px-6 py-16">
+      {/* Core Expertise Bento Grid */}
+      <section className="mt-32 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -154,10 +159,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
           transition={{ duration: 0.5 }}
           className="mb-12 text-left rtl:text-right"
         >
-          <h2 className="font-serif text-3xl sm:text-4xl text-[var(--text-main)] font-semibold mb-3">
-            {t.expertise.sectionTitle}
-          </h2>
-          <div className="h-1 w-20 bg-[var(--bg-accent)] rounded-full shadow-[0_0_10px_var(--glow-color)]"></div>
+          <h2 className="text-headline-lg font-headline-lg mb-2">{t.expertise.sectionTitle}</h2>
+          <p className="text-on-surface-variant text-body-md font-body-md">
+            {t.expertise.subtitle}
+          </p>
         </motion.div>
 
         <motion.div
@@ -171,10 +176,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
               transition: { staggerChildren: 0.12 },
             },
           }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 md:grid-cols-12 gap-gutter"
         >
           {portfolioData.skills.categories.map((cat, index) => {
             const localizedCat = t.expertise.categories[index] || cat;
+            const isWide = index === 0 || index === 3;
             return (
               <motion.div
                 key={index}
@@ -182,34 +188,35 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
                   hidden: { opacity: 0, y: 30 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
                 }}
-                whileHover={{ y: -8, transition: { type: 'spring', stiffness: 400 } }}
-                className="tech-card group relative p-7 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-color)] hover:border-[var(--bg-accent)] transition-colors shadow-xl text-left rtl:text-right flex flex-col justify-between"
+                whileHover={{ y: -6, transition: { type: 'spring', stiffness: 400 } }}
+                className={`${
+                  isWide ? 'md:col-span-8' : 'md:col-span-4'
+                } glass-card p-8 rounded-3xl relative overflow-hidden group flex flex-col justify-between text-left rtl:text-right`}
               >
-                <div className="icon-glow absolute top-6 left-6 rtl:right-6 rtl:left-auto w-12 h-12 bg-[var(--bg-accent)] opacity-0 transition-opacity rounded-full blur-xl pointer-events-none"></div>
+                <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:text-primary/10 transition-colors pointer-events-none">
+                  <span className="material-symbols-outlined text-7xl">{cat.icon}</span>
+                </div>
 
-                <div>
-                  <div className="mb-5 inline-block p-3 bg-[var(--bg-accent-sub)] rounded-xl border border-[var(--border-color)] shadow-inner">
-                    <span className="material-symbols-outlined text-3xl text-[var(--bg-accent)]">
-                      {cat.icon}
-                    </span>
-                  </div>
-                  <h3 className="font-serif text-xl font-semibold mb-2 text-[var(--text-main)] group-hover:text-[var(--text-accent)] transition-colors">
+                <div className="relative z-10">
+                  <span className="material-symbols-outlined text-primary mb-4 text-4xl block">
+                    {cat.icon}
+                  </span>
+                  <h3 className="text-headline-md font-headline-md mb-4 text-on-surface group-hover:text-primary transition-colors">
                     {localizedCat.title}
                   </h3>
-                  <p className="text-xs text-[var(--text-sub)] leading-relaxed mb-6">
+                  <p className="text-on-surface-variant text-body-md font-body-md max-w-md mb-6 leading-relaxed">
                     {localizedCat.description}
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[var(--border-color)]">
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-outline-variant/30 relative z-10">
                   {cat.skills.map((s, idx) => (
-                    <motion.span
+                    <span
                       key={idx}
-                      whileHover={{ scale: 1.08 }}
-                      className="bg-[var(--bg-card-sub)] text-[var(--text-sub)] text-[11px] font-medium px-2.5 py-1 rounded-md border border-[var(--border-color)]"
+                      className="px-3 py-1 bg-surface-container rounded-full text-label-sm font-label-sm border border-outline-variant/30 text-on-surface-variant"
                     >
                       {s}
-                    </motion.span>
+                    </span>
                   ))}
                 </div>
               </motion.div>
@@ -218,12 +225,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
         </motion.div>
       </section>
 
-      {/* Dynamic Stat Section (Atmospheric & Animated Counter) */}
-      <section className="w-full bg-[var(--bg-surface-lowest)] py-16 relative overflow-hidden border-y border-[var(--border-color)] my-8">
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(0,85,255,0.15)_0%,_transparent_70%)]"></div>
-        </div>
-        <div className="max-w-[1120px] mx-auto px-6 flex flex-wrap justify-around gap-10 sm:gap-16 text-center relative z-10">
+      {/* Dynamic Stat Section */}
+      <section className="mt-32 border-y border-white/10 py-16 bg-surface-container-lowest/50 relative overflow-hidden">
+        <div className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop flex flex-wrap justify-around gap-10 sm:gap-16 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -231,10 +235,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
             transition={{ duration: 0.5 }}
             className="space-y-2"
           >
-            <p className="text-[var(--text-accent)] font-serif text-4xl sm:text-5xl font-bold tracking-tight">
+            <p className="text-headline-xl font-headline-xl text-primary leading-tight">
               <AnimatedCounter targetValue={portfolioData.personal.stats.projectsShipped} />
             </p>
-            <p className="text-xs text-[var(--text-sub)] font-bold uppercase tracking-widest">
+            <p className="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">
               {t.stats.projectsShipped}
             </p>
           </motion.div>
@@ -246,10 +250,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
             transition={{ duration: 0.5, delay: 0.15 }}
             className="space-y-2"
           >
-            <p className="text-[var(--text-accent)] font-serif text-4xl sm:text-5xl font-bold tracking-tight">
+            <p className="text-headline-xl font-headline-xl text-secondary leading-tight">
               <AnimatedCounter targetValue={portfolioData.personal.stats.systemUptime} />
             </p>
-            <p className="text-xs text-[var(--text-sub)] font-bold uppercase tracking-widest">
+            <p className="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">
               {t.stats.systemUptime}
             </p>
           </motion.div>
@@ -261,10 +265,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
             transition={{ duration: 0.5, delay: 0.3 }}
             className="space-y-2"
           >
-            <p className="text-[var(--text-accent)] font-serif text-4xl sm:text-5xl font-bold tracking-tight">
+            <p className="text-headline-xl font-headline-xl text-primary leading-tight">
               <AnimatedCounter targetValue={portfolioData.personal.stats.commitsMade} />
             </p>
-            <p className="text-xs text-[var(--text-sub)] font-bold uppercase tracking-widest">
+            <p className="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">
               {t.stats.commitsPushed}
             </p>
           </motion.div>

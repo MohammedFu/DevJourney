@@ -31,10 +31,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           </button>
 
           <div className="absolute bottom-4 left-6 right-6 text-left rtl:text-right">
-            <span className="bg-[var(--bg-accent)] text-[var(--text-accent-on)] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 inline-block shadow-md">
+            <span className="btn-aurora px-3 py-1 rounded-full text-xs font-headline font-bold uppercase tracking-wider mb-2 inline-block shadow-md">
               {project.category}
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[var(--text-main)]">
+            <h2 className="font-headline text-2xl sm:text-3xl font-bold text-[var(--text-main)]">
               {project.title}
             </h2>
           </div>
@@ -43,16 +43,16 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
         {/* Modal Scroll Content */}
         <div className="p-6 sm:p-10 overflow-y-auto space-y-6 text-left rtl:text-right flex-1">
           <div>
-            <h3 className="text-xs uppercase font-bold tracking-widest text-[var(--text-accent)] mb-2">
+            <h3 className="font-mono-code text-xs uppercase font-bold tracking-widest text-[var(--text-accent)] mb-2">
               {t.projectModal.overview}
             </h3>
-            <p className="text-sm sm:text-base text-[var(--text-sub)] leading-relaxed">
+            <p className="text-sm sm:text-base text-[var(--text-sub)] leading-relaxed font-sans">
               {project.description}
             </p>
           </div>
 
           <div>
-            <h3 className="text-xs uppercase font-bold tracking-widest text-[var(--text-accent)] mb-3">
+            <h3 className="font-mono-code text-xs uppercase font-bold tracking-widest text-[var(--text-accent)] mb-3">
               {t.projectModal.techUsed}
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -68,7 +68,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           </div>
 
           <div className="border-t border-[var(--border-color)] pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2 text-xs text-[var(--text-sub)]">
+            <div className="flex items-center gap-2 text-xs text-[var(--text-sub)] font-mono-code">
               <span className="material-symbols-outlined text-[var(--text-accent)]">terminal</span>
               <span>{t.projectModal.primaryLanguage}: <strong className="text-[var(--text-main)]">{project.language}</strong></span>
             </div>
@@ -77,7 +77,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[var(--bg-accent)] text-[var(--text-accent-on)] px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-all shadow-lg active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 btn-aurora px-6 py-3 rounded-full text-xs font-headline font-bold uppercase tracking-wider transition-all active:scale-95"
             >
               {t.projectModal.viewGithub}
               <span className="material-symbols-outlined text-base">open_in_new</span>

@@ -1,64 +1,63 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from '../utils/motion';
 import { useApp } from '../context/AppContext';
+import type { PageTab } from '../App';
 
 interface NavbarProps {
-  activePage: 'home' | 'experience' | 'projects' | 'contact';
-  onNavigate: (page: 'home' | 'experience' | 'projects' | 'contact') => void;
+  activePage: PageTab;
+  onNavigate: (page: PageTab) => void;
   onOpenCvModal: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenCvModal }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export const Navbar: React.FC<NavbarProps> = ({
+  activePage,
+  onNavigate,
+  onOpenCvModal,
+}) => {
   const { theme, toggleTheme, language, toggleLanguage, t } = useApp();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navItems: Array<{ id: 'home' | 'experience' | 'projects' | 'contact'; label: string }> = [
-    { id: 'home', label: t.nav.overview },
+  const navItems: { id: PageTab; label: string }[] = [
+    { id: 'home', label: t.nav.overview || 'Overview' },
     { id: 'experience', label: t.nav.experience },
     { id: 'projects', label: t.nav.projects },
     { id: 'contact', label: t.nav.contact },
   ];
 
-  const handleNavClick = (id: 'home' | 'experience' | 'projects' | 'contact') => {
-    onNavigate(id);
+  const handleNavClick = (page: PageTab) => {
+    onNavigate(page);
     setMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-[var(--nav-bg)] backdrop-blur-md border-b border-[var(--border-color)] h-16 transition-colors duration-300">
-      <div className="max-w-[1120px] mx-auto px-6 flex justify-between items-center h-full">
+    <header className="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-xl transition-colors duration-300">
+      <nav className="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 max-w-container-max-width mx-auto">
         {/* Brand Logo */}
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => handleNavClick('home')}
-          className="font-serif text-2xl font-bold tracking-tight text-[var(--text-main)] hover:text-[var(--bg-accent)] transition-colors flex items-center gap-2"
+          className="text-headline-md font-headline-md font-bold tracking-tighter text-primary flex items-center gap-2.5"
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-[var(--bg-accent)] shadow-[0_0_10px_var(--glow-color)]"></span>
-          {t.nav.brand}
+          <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+          <span>{t.nav.brand}</span>
         </motion.button>
 
-        {/* Desktop Navigation Links with Animated Pill */}
-        <div className="hidden md:flex items-center gap-1 font-sans text-sm tracking-wide bg-[var(--bg-card)]/80 p-1.5 rounded-full border border-[var(--border-color)]">
+        {/* Desktop Navigation Links */}
+        <div className="hidden md:flex items-center gap-8">
           {navItems.map((item) => {
             const isActive = activePage === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`relative px-5 py-1.5 rounded-full transition-colors text-xs font-bold focus:outline-none ${
-                  isActive ? 'text-[var(--text-accent-on)]' : 'text-[var(--text-sub)] hover:text-[var(--text-main)]'
+                className={`relative font-label-md text-label-md transition-colors focus:outline-none ${
+                  isActive
+                    ? 'text-primary font-bold border-b-2 border-primary pb-1'
+                    : 'text-on-surface-variant hover:text-primary'
                 }`}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-active-pill"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    className="absolute inset-0 bg-[var(--bg-accent)] rounded-full z-0 shadow-md shadow-[var(--glow-color)]/20"
-                  />
-                )}
-                <span className="relative z-10">{item.label}</span>
+                {item.label}
               </button>
             );
           })}
@@ -72,9 +71,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenCv
             whileTap={{ scale: 0.95 }}
             onClick={toggleLanguage}
             title="Toggle Language (English / العربية)"
-            className="flex items-center gap-1.5 bg-[var(--bg-card)] text-[var(--text-main)] px-3.5 py-1.5 rounded-full border border-[var(--border-color)] text-xs font-bold transition-all hover:border-[var(--bg-accent)]"
+            className="flex items-center gap-1.5 bg-surface-container text-on-surface px-3.5 py-2 rounded-lg border border-outline-variant/30 text-label-sm font-label-sm font-bold transition-all hover:border-primary shadow-sm cursor-pointer"
           >
-            <span className="material-symbols-outlined text-base text-[var(--bg-accent)]">translate</span>
+            <span className="material-symbols-outlined text-base text-primary">translate</span>
             <span>{language === 'en' ? 'عربي' : 'EN'}</span>
           </motion.button>
 
@@ -83,20 +82,20 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenCv
             whileHover={{ scale: 1.05, rotate: 15 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleTheme}
-            title={theme === 'dark' ? 'Switch to Daylight Light Mode' : 'Switch to Nocturne Dark Mode'}
-            className="p-2 bg-[var(--bg-card)] text-[var(--text-main)] rounded-full border border-[var(--border-color)] flex items-center justify-center transition-all hover:border-[var(--bg-accent)] shadow-sm"
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            className="p-2 bg-surface-container text-on-surface rounded-lg border border-outline-variant/30 flex items-center justify-center transition-all hover:border-primary shadow-sm cursor-pointer"
           >
-            <span className="material-symbols-outlined text-lg">
+            <span className="material-symbols-outlined text-lg text-primary">
               {theme === 'dark' ? 'light_mode' : 'dark_mode'}
             </span>
           </motion.button>
 
           {/* Download CV Button */}
           <motion.button
-            whileHover={{ scale: 1.05, boxShadow: '0px 0px 20px rgba(0, 85, 255, 0.4)' }}
+            whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
             onClick={onOpenCvModal}
-            className="bg-[var(--bg-accent)] text-[var(--text-accent-on)] px-5 py-2 rounded-full font-sans text-xs font-bold uppercase tracking-wider transition-all shadow-md"
+            className="primary-btn-gradient text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-lg font-bold hover:brightness-110 active:scale-95 transition-all shadow-lg cursor-pointer"
           >
             {t.nav.downloadCv}
           </motion.button>
@@ -106,16 +105,16 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenCv
         <div className="flex items-center gap-2 md:hidden">
           <button
             onClick={toggleLanguage}
-            className="px-2.5 py-1 text-xs font-bold bg-[var(--bg-card)] text-[var(--text-main)] border border-[var(--border-color)] rounded-lg"
+            className="px-2.5 py-1 text-label-sm font-label-sm font-bold bg-surface-container text-on-surface border border-outline-variant/30 rounded-lg"
           >
             {language === 'en' ? 'عربي' : 'EN'}
           </button>
 
           <button
             onClick={toggleTheme}
-            className="p-1.5 text-[var(--text-main)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg"
+            className="p-1.5 text-on-surface bg-surface-container border border-outline-variant/30 rounded-lg"
           >
-            <span className="material-symbols-outlined text-xl">
+            <span className="material-symbols-outlined text-xl text-primary">
               {theme === 'dark' ? 'light_mode' : 'dark_mode'}
             </span>
           </button>
@@ -123,14 +122,14 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenCv
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle Navigation Menu"
-            className="text-[var(--text-main)] p-2 hover:text-[var(--bg-accent)] focus:outline-none"
+            className="text-on-surface p-2 hover:text-primary focus:outline-none"
           >
             <span className="material-symbols-outlined text-2xl">
               {mobileMenuOpen ? 'close' : 'menu'}
             </span>
           </button>
         </div>
-      </div>
+      </nav>
 
       {/* Mobile Drawer Menu */}
       <AnimatePresence>
@@ -140,16 +139,16 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenCv
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden bg-[var(--bg-card)] border-b border-[var(--border-color)] px-6 py-6 flex flex-col gap-3 shadow-2xl"
+            className="md:hidden bg-surface/90 border-b border-outline-variant/30 px-margin-mobile py-6 flex flex-col gap-3 shadow-2xl backdrop-blur-xl"
           >
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`text-left rtl:text-right py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
+                className={`text-left rtl:text-right py-2.5 px-4 rounded-lg text-body-md font-body-md transition-colors ${
                   activePage === item.id
-                    ? 'bg-[var(--bg-accent)] text-[var(--text-accent-on)] font-bold shadow-lg'
-                    : 'text-[var(--text-sub)] hover:bg-[var(--bg-card-sub)] hover:text-[var(--text-main)]'
+                    ? 'primary-btn-gradient text-on-primary font-bold shadow-lg'
+                    : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
                 }`}
               >
                 {item.label}
@@ -160,13 +159,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenCv
                 setMobileMenuOpen(false);
                 onOpenCvModal();
               }}
-              className="w-full mt-2 bg-[var(--bg-accent)] text-[var(--text-accent-on)] py-3 rounded-xl text-center font-sans text-xs font-bold uppercase tracking-wider shadow-lg active:scale-95"
+              className="w-full mt-2 primary-btn-gradient text-on-primary py-3 rounded-lg text-center font-label-md text-label-md font-bold shadow-lg active:scale-95"
             >
               {t.nav.downloadCv}
             </button>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 };
