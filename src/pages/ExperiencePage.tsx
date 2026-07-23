@@ -1,222 +1,227 @@
 import React from 'react';
 import { motion } from '../utils/motion';
-import { portfolioData } from '../data/portfolioData';
+import { portfolioData, type ExperienceItem, type EducationItem, type CertificationItem } from '../data/portfolioData';
 import { useApp } from '../context/AppContext';
 
 export const ExperiencePage: React.FC = () => {
-  const { t, isRtl } = useApp();
+  const { t } = useApp();
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
 
   return (
-    <div className="pt-6 pb-24 max-w-[1120px] mx-auto px-6 text-left rtl:text-right">
+    <div className="relative pt-24 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto">
+      {/* Background Aurora Glow Blobs */}
+      <div className="aurora-glow top-20 -left-20"></div>
+      <div className="aurora-glow bottom-20 -right-20"></div>
+
       {/* Header Section */}
-      <motion.header
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-16"
-      >
-        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[var(--text-main)] mb-4">
-          {t.experiencePage.title}
+      <header className="mb-16 text-left rtl:text-right">
+        <span className="text-primary font-label-sm uppercase tracking-widest block mb-4">
+          {t.experiencePage.badge}
+        </span>
+        <h1 className="text-headline-xl font-headline-xl mb-6 max-w-2xl leading-tight text-on-surface">
+          {t.experiencePage.title}{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+            {t.experiencePage.titleHighlight}
+          </span>
         </h1>
-        <p className="text-base sm:text-lg text-[var(--text-sub)] max-w-2xl leading-relaxed">
+        <p className="text-body-lg text-on-surface-variant max-w-xl">
           {t.experiencePage.subtitle}
         </p>
-      </motion.header>
+      </header>
 
-      {/* Experience Timeline */}
-      <section className="relative my-16">
-        {/* Timeline Line */}
-        <div className="absolute left-4 md:left-1/2 rtl:left-auto rtl:right-4 rtl:md:right-1/2 top-0 bottom-0 w-[2px] timeline-line -translate-x-1/2 rtl:translate-x-1/2"></div>
+      {/* Main Bento Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Career Timeline (Col Span 7) */}
+        <section className="lg:col-span-7 glass-card p-8 md:p-12 rounded-xl relative overflow-hidden text-left rtl:text-right">
+          <h2 className="text-headline-lg font-headline-lg mb-12 flex items-center gap-3 text-on-surface">
+            <span
+              className="material-symbols-outlined text-primary text-3xl"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              work
+            </span>
+            {t.experiencePage.timelineTitle}
+          </h2>
 
-        <div className="space-y-14">
-          {portfolioData.experiences.map((exp, index) => {
-            const isEven = index % 2 === 0;
-            return (
-              <motion.div
-                key={exp.id}
-                initial={{ opacity: 0, x: isEven ? (isRtl ? 40 : -40) : (isRtl ? -40 : 40), y: 20 }}
-                whileInView={{ opacity: 1, x: 0, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-start"
-              >
-                {/* Date Label (Desktop) */}
-                <div
-                  className={`hidden md:block pt-3 ${
-                    isEven
-                      ? 'text-right rtl:text-left pr-12 rtl:pr-0 rtl:pl-12'
-                      : 'order-2 pl-12 rtl:pl-0 rtl:pr-12'
-                  }`}
-                >
-                  <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-accent)] bg-[var(--bg-accent-sub)] text-white px-3.5 py-1.5 rounded-full border border-[var(--border-color)] shadow-md">
-                    {exp.period}
-                  </span>
-                </div>
+          <div className="relative pl-8 rtl:pr-8 rtl:pl-0">
+            {/* Vertical Line */}
+            <div className="absolute left-[3px] rtl:right-[3px] rtl:left-auto top-2 bottom-8 w-px timeline-line"></div>
 
-                {/* Card Container */}
-                <div
-                  className={`pl-10 rtl:pl-0 rtl:pr-10 md:pl-0 rtl:md:pr-0 relative ${
-                    isEven
-                      ? 'md:pl-12 rtl:md:pl-0 rtl:md:pr-12'
-                      : 'order-1 md:pr-12 rtl:md:pr-0 rtl:md:pl-12 md:text-right rtl:md:text-left'
-                  }`}
-                >
-                  {/* Glowing Marker Dot */}
+            {/* Timeline Items */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+              className="space-y-16"
+            >
+              {portfolioData.experiences.map((job: ExperienceItem, index: number) => {
+                const isCurrent = job.isCurrent || index === 0;
+                const locJob = t.experiencesData?.[job.id] || job;
+
+                return (
                   <motion.div
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ type: 'spring', stiffness: 500, delay: 0.2 }}
-                    className={`absolute top-4 w-4 h-4 rounded-full z-10 ${
-                      exp.isCurrent
-                        ? 'bg-[var(--bg-accent)] ring-4 ring-[var(--bg-accent)]/30 shadow-[0_0_20px_var(--glow-color)] left-2 rtl:left-auto rtl:right-2 md:left-auto md:left-1/2 -translate-x-1/2'
-                        : 'bg-[var(--text-sub)] left-2 rtl:left-auto rtl:right-2 md:left-auto md:left-1/2 -translate-x-1/2'
-                    }`}
-                  ></motion.div>
-
-                  {/* Mobile Date Tag */}
-                  <div className="md:hidden mb-3">
-                    <span className="text-xs font-bold uppercase tracking-widest text-white bg-[var(--bg-accent-sub)] px-3 py-1 rounded-full border border-[var(--border-color)]">
-                      {exp.period}
-                    </span>
-                  </div>
-
-                  {/* Experience Card */}
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    className="impact-card-hover border border-[var(--border-color)] bg-[var(--bg-card)] p-6 sm:p-8 rounded-2xl group shadow-xl hover:border-[var(--bg-accent)] transition-all"
+                    key={job.id || index}
+                    variants={itemVariants}
+                    className={`relative ${!isCurrent ? 'opacity-90' : ''}`}
                   >
-                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-[var(--text-main)] mb-1 group-hover:text-[var(--text-accent)] transition-colors">
-                      {exp.role}
-                    </h3>
-                    <p className="text-sm font-semibold text-[var(--text-accent)] mb-3">
-                      {exp.company} • <span className="text-[var(--text-sub)] font-normal">{exp.location}</span>
-                    </p>
-                    <p className="text-sm text-[var(--text-sub)] leading-relaxed mb-6">
-                      "{exp.description}"
+                    {/* Glowing Marker Dot */}
+                    <div
+                      className={`absolute -left-[33px] rtl:-right-[33px] rtl:left-auto top-1.5 w-4 h-4 rounded-full ${
+                        isCurrent
+                          ? 'bg-primary ring-4 ring-primary/20'
+                          : 'bg-surface-variant border-2 border-primary'
+                      }`}
+                    ></div>
+
+                    {/* Job Header */}
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 mb-4">
+                      <div>
+                        <h3 className="text-headline-md font-headline-md text-on-surface">
+                          {locJob.role}
+                        </h3>
+                        <p className="text-primary font-label-md">
+                          {locJob.company} • {locJob.period}
+                        </p>
+                      </div>
+                      <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-label-sm border border-primary/20 self-start">
+                        {t.experiencePage.fullTime}
+                      </span>
+                    </div>
+
+                    {/* Job Highlights */}
+                    <p className="text-body-md text-on-surface-variant mb-6 leading-relaxed">
+                      {locJob.description}
                     </p>
 
-                    {/* Tech Pills */}
-                    <div
-                      className={`flex flex-wrap gap-2 ${
-                        !isEven ? 'md:justify-end rtl:md:justify-start' : ''
-                      }`}
-                    >
-                      {exp.technologies.map((tech, idx) => (
+                    {/* Technologies Used */}
+                    <div className="flex flex-wrap gap-2">
+                      {job.technologies.map((tech: string, i: number) => (
                         <span
-                          key={idx}
-                          className="bg-[var(--bg-card-sub)] text-[var(--text-sub)] px-3 py-1 rounded-full text-xs font-medium border border-[var(--border-color)]"
+                          key={i}
+                          className="px-3 py-1 bg-surface-variant/50 border border-outline-variant rounded-full text-label-sm text-on-surface-variant"
                         >
                           {tech}
                         </span>
                       ))}
                     </div>
                   </motion.div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
+                );
+              })}
+            </motion.div>
+          </div>
+        </section>
 
-      {/* Education & Certifications Bento Grid */}
-      <section className="mt-24 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Education Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="lg:col-span-2 border border-[var(--border-color)] rounded-2xl p-8 bg-[var(--bg-card)] flex flex-col justify-between shadow-xl"
-        >
-          <div>
-            <div className="flex items-center gap-3 mb-8 border-b border-[var(--border-color)] pb-4">
-              <span className="material-symbols-outlined text-[var(--text-accent)] text-3xl">
+        {/* Sidebar: Education & Certs (Col Span 5) */}
+        <div className="lg:col-span-5 grid grid-cols-1 gap-8 text-left rtl:text-right">
+          {/* Education Card */}
+          <section className="glass-card p-8 rounded-xl relative group">
+            <div className="absolute top-0 right-0 rtl:left-0 rtl:right-auto p-8 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+              <span
+                className="material-symbols-outlined text-[64px] text-primary"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
                 school
               </span>
-              <h2 className="font-serif text-2xl font-bold text-[var(--text-main)]">
-                {t.experiencePage.academicTitle}
-              </h2>
             </div>
 
-            <div className="space-y-6">
-              {portfolioData.education.map((edu) => (
-                <div key={edu.id} className="space-y-1">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
-                    <h3 className="font-serif text-lg font-bold text-[var(--text-main)]">
-                      {edu.degree}
-                    </h3>
-                    <span className="text-xs text-[var(--text-accent)] font-bold">{edu.period}</span>
+            <h2 className="text-headline-md font-headline-md mb-8 flex items-center gap-3 text-on-surface">
+              <span className="material-symbols-outlined text-primary text-2xl">history_edu</span>
+              {t.experiencePage.academicTitle}
+            </h2>
+
+            <div className="space-y-8">
+              {portfolioData.education.map((edu: EducationItem, index: number) => {
+                const locEdu = t.educationData?.[edu.id] || edu;
+
+                return (
+                  <div
+                    key={edu.id || index}
+                    className={index > 0 ? 'pt-6 border-t border-outline-variant/30' : ''}
+                  >
+                    <p className="text-label-sm text-primary mb-1">{locEdu.period}</p>
+                    <h4 className="text-body-lg font-bold text-on-surface">
+                      {locEdu.degree}
+                    </h4>
+                    <p className="text-body-md text-on-surface-variant">
+                      {locEdu.institution}
+                    </p>
+                    {locEdu.grade && (
+                      <p className="text-label-sm text-on-surface-variant mt-2 italic">
+                        {locEdu.grade}
+                      </p>
+                    )}
                   </div>
-                  <p className="text-sm text-[var(--text-sub)] font-medium">{edu.institution}</p>
-                  <p className="text-xs font-bold text-[var(--text-accent-on)] bg-[var(--bg-accent)] px-2.5 py-0.5 rounded shadow-sm mt-1 inline-block">
-                    {edu.grade}
-                  </p>
-                  {edu.details && (
-                    <p className="text-xs text-[var(--text-sub)] mt-2 leading-relaxed">{edu.details}</p>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
-          </div>
+          </section>
 
-          <div className="mt-8">
-            <div className="h-1 w-24 bg-[var(--bg-accent)] rounded-full shadow-[0_0_10px_var(--glow-color)]"></div>
-          </div>
-        </motion.div>
-
-        {/* Certifications Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="border border-[var(--border-color)] rounded-2xl p-8 bg-[var(--bg-card)] flex flex-col shadow-xl"
-        >
-          <div className="flex items-center gap-3 mb-8 border-b border-[var(--border-color)] pb-4">
-            <span className="material-symbols-outlined text-[var(--text-accent)] text-3xl">
-              verified
-            </span>
-            <h2 className="font-serif text-2xl font-bold text-[var(--text-main)]">
+          {/* Certifications Card */}
+          <section className="glass-card p-8 rounded-xl">
+            <h2 className="text-headline-md font-headline-md mb-8 flex items-center gap-3 text-on-surface">
+              <span className="material-symbols-outlined text-primary text-2xl">verified</span>
               {t.experiencePage.certificationsTitle}
             </h2>
-          </div>
 
-          <ul className="space-y-6">
-            {portfolioData.certifications.map((cert) => (
-              <li key={cert.id} className="flex items-start gap-3.5">
-                <div className="w-2.5 h-2.5 bg-[var(--bg-accent)] rounded-full mt-1.5 shrink-0 shadow-[0_0_8px_var(--glow-color)]"></div>
-                <div>
-                  <p className="text-sm font-bold text-[var(--text-main)]">{cert.title}</p>
-                  <p className="text-xs text-[var(--text-sub)] mt-1">{cert.issuer} • {cert.period}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-      </section>
+            <div className="grid grid-cols-1 gap-4">
+              {portfolioData.certifications.map((cert: CertificationItem, index: number) => {
+                const locCert = t.certificationsData?.[cert.id] || cert;
 
-      {/* Visual Interest Banner */}
-      <section className="mt-20">
-        <div className="w-full h-[320px] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-2xl relative">
-          <img
-            src="/images/engineering-environment-banner.png"
-            alt="Modern Software Engineering Environment"
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 brightness-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-app)] via-transparent to-transparent"></div>
-          <div className="absolute bottom-6 left-8 right-8 flex justify-between items-end">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-[var(--text-accent)] mb-1">
-                {t.experiencePage.philosophySub}
+                return (
+                  <div
+                    key={cert.id || index}
+                    className="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors border border-outline-variant/20"
+                  >
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="material-symbols-outlined text-primary">workspace_premium</span>
+                    </div>
+                    <div>
+                      <h4 className="text-body-md font-bold text-on-surface">{locCert.title}</h4>
+                      <p className="text-label-sm text-on-surface-variant">
+                        {locCert.issuer} • {locCert.period}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Dynamic Achievement Stats Cards */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="glass-card p-6 rounded-xl text-center">
+              <div className="text-headline-lg font-headline-lg text-primary mb-1">
+                {portfolioData.personal.stats.projectsShipped}+
+              </div>
+              <p className="text-label-sm uppercase tracking-wider text-on-surface-variant">
+                {t.experiencePage.projectsDone}
               </p>
-              <h3 className="font-serif text-2xl font-bold text-[var(--text-main)]">
-                {t.experiencePage.philosophyTitle}
-              </h3>
+            </div>
+
+            <div className="glass-card p-6 rounded-xl text-center">
+              <div className="text-headline-lg font-headline-lg text-secondary mb-1">
+                {portfolioData.experiences.length * 3}+
+              </div>
+              <p className="text-label-sm uppercase tracking-wider text-on-surface-variant">
+                {t.experiencePage.milestones}
+              </p>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

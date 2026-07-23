@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from '../utils/motion';
-import confetti from '../utils/confetti';
 import { portfolioData } from '../data/portfolioData';
 import { useApp } from '../context/AppContext';
 
 export const ContactPage: React.FC = () => {
-  const { t, isRtl } = useApp();
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-  const [sanaaTime, setSanaaTime] = useState('');
+  const { t } = useApp();
+  const [sanaaTime, setSanaaTime] = useState<string>('');
+  const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: 'Project Collaboration',
+    message: '',
+  });
 
   useEffect(() => {
     const updateTime = () => {
@@ -20,352 +24,279 @@ export const ContactPage: React.FC = () => {
         hour12: true,
       };
       const formatter = new Intl.DateTimeFormat([], options);
-      setSanaaTime(formatter.format(new Date()) + ' (GMT+3)');
+      setSanaaTime(formatter.format(new Date()));
     };
 
     updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.email) {
-      setSubmitted(true);
-
-      // Trigger Confetti Explosion
-      try {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#0055ff', '#7bd0ff', '#ffffff', '#181919'],
-        });
-      } catch (err) {
-        console.error('Confetti error:', err);
-      }
-
-      setTimeout(() => {
-        setSubmitted(false);
-        setFormData({ name: '', email: '', message: '' });
-      }, 6000);
-    }
+    setFormSubmitted(true);
+    setTimeout(() => {
+      setFormSubmitted(false);
+      setFormData({
+        name: '',
+        email: '',
+        subject: 'Project Collaboration',
+        message: '',
+      });
+    }, 4000);
   };
 
   return (
-    <div className="pt-6 pb-24 max-w-[1120px] mx-auto px-6 text-left rtl:text-right relative overflow-hidden">
-      {/* Background Glow Accents */}
-      <div className="absolute -top-24 -right-24 rtl:-left-24 rtl:right-auto w-96 h-96 ambient-glow"></div>
-      <div className="absolute top-1/2 -left-48 rtl:-right-48 rtl:left-auto w-96 h-96 ambient-glow"></div>
+    <div className="relative pt-24 pb-24 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
+      {/* Background Atmospheric Glow */}
+      <div className="aurora-glow bg-primary w-[500px] h-[500px] -top-40 -left-40"></div>
+      <div className="aurora-glow bg-secondary w-[400px] h-[400px] top-1/2 -right-20"></div>
 
       {/* Hero Header */}
-      <motion.header
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-16"
-      >
-        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[var(--text-main)] mb-4 leading-tight">
-          {t.contactPage.titlePrefix}
-          <span className="text-[var(--text-accent)] italic">{t.contactPage.titleItalic}</span>
+      <section className="mb-12 text-left rtl:text-right">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-5">
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span className="text-label-sm font-label-sm text-primary">
+            {t.contactPage.badge}
+          </span>
+        </div>
+        <h1 className="text-headline-xl font-headline-xl text-on-surface mb-4 leading-tight max-w-2xl">
+          {t.contactPage.titlePrefix}{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+            {t.contactPage.titleItalic}
+          </span>{' '}
           {t.contactPage.titleSuffix}
         </h1>
-        <p className="text-base sm:text-lg text-[var(--text-sub)] max-w-2xl leading-relaxed">
+        <p className="text-body-lg font-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
           {t.contactPage.subtitle}
         </p>
-      </motion.header>
+      </section>
 
-      {/* Contact Grid (Form + Direct Connections) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
-        {/* Left Form */}
+      {/* Bento Layout Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch text-left rtl:text-right">
+        {/* Contact Form Section (7 cols) */}
         <motion.div
-          initial={{ opacity: 0, x: isRtl ? 30 : -30 }}
+          initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="lg:col-span-7 bg-[var(--bg-card)] p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] shadow-2xl relative"
+          transition={{ duration: 0.5 }}
+          className="lg:col-span-7 glass-card p-8 md:p-10 rounded-2xl relative overflow-hidden group flex flex-col justify-between"
         >
-          <h2 className="font-serif text-2xl font-bold text-[var(--text-main)] mb-6">
-            {t.contactPage.formTitle}
-          </h2>
+          <div className="relative z-10">
+            <h2 className="text-headline-lg font-headline-lg mb-8 text-on-surface">
+              {t.contactPage.formTitle}
+            </h2>
 
-          {submitted ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="p-8 bg-[var(--bg-card-sub)] border border-[var(--border-color)] rounded-xl text-center space-y-4 shadow-xl"
-            >
-              <span className="material-symbols-outlined text-[var(--text-accent)] text-5xl animate-bounce">
-                check_circle
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-[var(--text-main)]">
-                {t.contactPage.messageReceivedTitle}
-              </h3>
-              <p className="text-sm text-[var(--text-sub)]">
-                {t.contactPage.messageReceivedText}
-                <strong className="text-[var(--text-accent)]">{formData.name}</strong>
-                {t.contactPage.messageReceivedEnd}
-              </p>
-            </motion.div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="group relative">
-                <label className="text-xs uppercase font-bold tracking-wider text-[var(--text-sub)] mb-2 block group-focus-within:text-[var(--text-accent)] transition-colors">
-                  {t.contactPage.nameLabel}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder={t.contactPage.namePlaceholder}
-                  className="w-full bg-transparent border-0 border-b border-[var(--border-color)] py-3 text-sm text-[var(--text-main)] focus:ring-0 focus:border-[var(--bg-accent)] transition-all placeholder:text-[var(--text-sub)]/50 outline-none"
-                />
-              </div>
-
-              <div className="group relative">
-                <label className="text-xs uppercase font-bold tracking-wider text-[var(--text-sub)] mb-2 block group-focus-within:text-[var(--text-accent)] transition-colors">
-                  {t.contactPage.emailLabel}
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder={t.contactPage.emailPlaceholder}
-                  className="w-full bg-transparent border-0 border-b border-[var(--border-color)] py-3 text-sm text-[var(--text-main)] focus:ring-0 focus:border-[var(--bg-accent)] transition-all placeholder:text-[var(--text-sub)]/50 outline-none"
-                />
-              </div>
-
-              <div className="group relative">
-                <label className="text-xs uppercase font-bold tracking-wider text-[var(--text-sub)] mb-2 block group-focus-within:text-[var(--text-accent)] transition-colors">
-                  {t.contactPage.messageLabel}
-                </label>
-                <textarea
-                  rows={4}
-                  required
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder={t.contactPage.messagePlaceholder}
-                  className="w-full bg-transparent border-0 border-b border-[var(--border-color)] py-3 text-sm text-[var(--text-main)] focus:ring-0 focus:border-[var(--bg-accent)] transition-all placeholder:text-[var(--text-sub)]/50 resize-none outline-none"
-                ></textarea>
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.03, boxShadow: '0px 0px 25px rgba(0, 85, 255, 0.4)' }}
-                whileTap={{ scale: 0.97 }}
-                type="submit"
-                className="group flex items-center justify-center gap-3 bg-[var(--bg-accent)] text-[var(--text-accent-on)] font-bold text-xs uppercase tracking-widest px-8 py-4 rounded-xl shadow-lg transition-all"
+            {formSubmitted ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="p-8 rounded-xl bg-primary/10 border border-primary/30 text-center space-y-4 my-auto"
               >
-                {t.contactPage.sendButton}
-                <span className={`material-symbols-outlined transition-transform ${isRtl ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`}>
-                  arrow_forward
+                <span className="material-symbols-outlined text-primary text-5xl">
+                  check_circle
                 </span>
-              </motion.button>
-            </form>
-          )}
+                <h3 className="text-headline-md font-headline-md text-on-surface">
+                  {t.contactPage.messageReceivedTitle}
+                </h3>
+                <p className="text-body-md text-on-surface-variant">
+                  {t.contactPage.messageReceivedText}
+                  {formData.name}
+                  {t.contactPage.messageReceivedEnd}
+                </p>
+              </motion.div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-label-sm font-label-sm text-on-surface-variant uppercase block">
+                      {t.contactPage.nameLabel}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder={t.contactPage.namePlaceholder}
+                      className="w-full bg-surface-variant/40 border border-outline-variant/30 rounded-xl px-4 py-3.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-on-surface text-body-md"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-label-sm font-label-sm text-on-surface-variant uppercase block">
+                      {t.contactPage.emailLabel}
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder={t.contactPage.emailPlaceholder}
+                      className="w-full bg-surface-variant/40 border border-outline-variant/30 rounded-xl px-4 py-3.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-on-surface text-body-md"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-label-sm font-label-sm text-on-surface-variant uppercase block">
+                    {t.contactPage.subjectLabel}
+                  </label>
+                  <select
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    className="w-full bg-surface-variant/40 border border-outline-variant/30 rounded-xl px-4 py-3.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-on-surface text-body-md appearance-none"
+                  >
+                    <option value="Project Collaboration">{t.contactPage.subjectOptions.collab}</option>
+                    <option value="General Inquiry">{t.contactPage.subjectOptions.inquiry}</option>
+                    <option value="Speaking Engagement">{t.contactPage.subjectOptions.speaking}</option>
+                    <option value="Other">{t.contactPage.subjectOptions.other}</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-label-sm font-label-sm text-on-surface-variant uppercase block">
+                    {t.contactPage.messageLabel}
+                  </label>
+                  <textarea
+                    required
+                    rows={5}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder={t.contactPage.messagePlaceholder}
+                    className="w-full bg-surface-variant/40 border border-outline-variant/30 rounded-xl px-4 py-3.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-on-surface text-body-md resize-none"
+                  ></textarea>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="primary-gradient-btn w-full py-4 rounded-xl font-bold text-headline-md flex items-center justify-center gap-3 shadow-lg cursor-pointer"
+                >
+                  <span>{t.contactPage.sendButton}</span>
+                  <span className="material-symbols-outlined">send</span>
+                </motion.button>
+              </form>
+            )}
+          </div>
         </motion.div>
 
-        {/* Right Direct Connections */}
+        {/* Right Column: Direct Connections & Sana'a Clock (5 cols) */}
         <motion.div
-          initial={{ opacity: 0, x: isRtl ? -30 : 30 }}
+          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="lg:col-span-5 space-y-6"
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="lg:col-span-5 flex flex-col justify-between gap-6"
         >
-          <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-sub)] mb-4">
-            {t.contactPage.directConn}
-          </h2>
+          {/* Direct Connections Card */}
+          <div className="glass-card-raised p-8 rounded-2xl flex-1 flex flex-col justify-between">
+            <div>
+              <h2 className="text-headline-md font-headline-md mb-6 text-on-surface">
+                {t.contactPage.directConn}
+              </h2>
 
-          <div className="flex flex-col gap-4">
-            {/* Email Card */}
-            <motion.a
-              whileHover={{ y: -3 }}
-              href={`mailto:${portfolioData.personal.email}`}
-              className="group flex items-center justify-between p-5 bg-[var(--bg-card)] border border-[var(--border-color)] hover:border-[var(--bg-accent)] rounded-2xl transition-all shadow-lg"
-            >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-[var(--bg-accent-sub)] rounded-xl border border-[var(--border-color)]">
-                  <span className="material-symbols-outlined text-[var(--bg-accent)] text-2xl">mail</span>
-                </div>
-                <div>
-                  <p className="text-xs text-[var(--text-sub)]">{t.contactPage.email}</p>
-                  <p className="font-bold text-sm text-[var(--text-main)] group-hover:text-[var(--text-accent)] transition-colors">
-                    {portfolioData.personal.email}
-                  </p>
-                </div>
-              </div>
-              <span className={`material-symbols-outlined text-[var(--text-sub)] group-hover:text-[var(--text-accent)] transition-colors ${isRtl ? 'rotate-90' : ''}`}>
-                north_east
-              </span>
-            </motion.a>
+              <div className="flex flex-col gap-3">
+                {/* LinkedIn */}
+                <a
+                  href={portfolioData.personal.linkedIn}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
+                    <span className="material-symbols-outlined text-2xl">alternate_email</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-label-sm font-label-sm text-on-surface-variant">{t.contactPage.linkedIn}</p>
+                    <p className="text-body-md font-body-md font-medium text-on-surface truncate">
+                      {portfolioData.personal.name}
+                    </p>
+                  </div>
+                  <span className="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-xl transition-transform rtl:rotate-180 flex-shrink-0">
+                    arrow_forward
+                  </span>
+                </a>
 
-            {/* Phone Card */}
-            <motion.a
-              whileHover={{ y: -3 }}
-              href={`tel:${portfolioData.personal.phone.replace(/\s+/g, '')}`}
-              className="group flex items-center justify-between p-5 bg-[var(--bg-card)] border border-[var(--border-color)] hover:border-[var(--bg-accent)] rounded-2xl transition-all shadow-lg"
-            >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-[var(--bg-accent-sub)] rounded-xl border border-[var(--border-color)]">
-                  <span className="material-symbols-outlined text-[var(--bg-accent)] text-2xl">call</span>
-                </div>
-                <div>
-                  <p className="text-xs text-[var(--text-sub)]">{t.contactPage.phone}</p>
-                  <p className="font-bold text-sm text-[var(--text-main)] group-hover:text-[var(--text-accent)] transition-colors">
-                    {portfolioData.personal.phone}
-                  </p>
-                </div>
-              </div>
-              <span className={`material-symbols-outlined text-[var(--text-sub)] group-hover:text-[var(--text-accent)] transition-colors ${isRtl ? 'rotate-90' : ''}`}>
-                north_east
-              </span>
-            </motion.a>
+                {/* GitHub */}
+                <a
+                  href={portfolioData.personal.gitHub}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary flex-shrink-0">
+                    <span className="material-symbols-outlined text-2xl">terminal</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-label-sm font-label-sm text-on-surface-variant">{t.contactPage.gitHub}</p>
+                    <p className="text-body-md font-body-md font-medium text-on-surface truncate">
+                      @MohammedFu
+                    </p>
+                  </div>
+                  <span className="material-symbols-outlined text-on-surface-variant group-hover:text-secondary text-xl transition-transform rtl:rotate-180 flex-shrink-0">
+                    arrow_forward
+                  </span>
+                </a>
 
-            {/* LinkedIn Card */}
-            <motion.a
-              whileHover={{ y: -3 }}
-              href={portfolioData.personal.linkedIn}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-between p-5 bg-[var(--bg-card)] border border-[var(--border-color)] hover:border-[var(--bg-accent)] rounded-2xl transition-all shadow-lg"
-            >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-[var(--bg-accent-sub)] rounded-xl border border-[var(--border-color)]">
-                  <span className="material-symbols-outlined text-[var(--bg-accent)] text-2xl">link</span>
-                </div>
-                <div>
-                  <p className="text-xs text-[var(--text-sub)]">{t.contactPage.linkedIn}</p>
-                  <p className="font-bold text-sm text-[var(--text-main)] group-hover:text-[var(--text-accent)] transition-colors">
-                    mohammed-al-sanhani
-                  </p>
-                </div>
-              </div>
-              <span className={`material-symbols-outlined text-[var(--text-sub)] group-hover:text-[var(--text-accent)] transition-colors ${isRtl ? 'rotate-90' : ''}`}>
-                north_east
-              </span>
-            </motion.a>
+                {/* Email */}
+                <a
+                  href={`mailto:${portfolioData.personal.email}`}
+                  className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
+                    <span className="material-symbols-outlined text-2xl">mail</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-label-sm font-label-sm text-on-surface-variant">
+                      {t.contactPage.email}
+                    </p>
+                    <p className="text-body-md font-body-md font-medium text-on-surface truncate">
+                      {portfolioData.personal.email}
+                    </p>
+                  </div>
+                  <span className="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-xl transition-transform rtl:rotate-180 flex-shrink-0">
+                    arrow_forward
+                  </span>
+                </a>
 
-            {/* GitHub Card */}
-            <motion.a
-              whileHover={{ y: -3 }}
-              href={portfolioData.personal.gitHub}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-between p-5 bg-[var(--bg-card)] border border-[var(--border-color)] hover:border-[var(--bg-accent)] rounded-2xl transition-all shadow-lg"
-            >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-[var(--bg-accent-sub)] rounded-xl border border-[var(--border-color)]">
-                  <span className="material-symbols-outlined text-[var(--bg-accent)] text-2xl">terminal</span>
-                </div>
-                <div>
-                  <p className="text-xs text-[var(--text-sub)]">{t.contactPage.gitHub}</p>
-                  <p className="font-bold text-sm text-[var(--text-main)] group-hover:text-[var(--text-accent)] transition-colors">
-                    MohammedFu
-                  </p>
-                </div>
+                {/* Phone */}
+                <a
+                  href={`tel:${portfolioData.personal.phone}`}
+                  className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary flex-shrink-0">
+                    <span className="material-symbols-outlined text-2xl">call</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-label-sm font-label-sm text-on-surface-variant">
+                      {t.contactPage.phone}
+                    </p>
+                    <p className="text-body-md font-body-md font-medium text-on-surface truncate">
+                      {portfolioData.personal.phone}
+                    </p>
+                  </div>
+                  <span className="material-symbols-outlined text-on-surface-variant group-hover:text-secondary text-xl transition-transform rtl:rotate-180 flex-shrink-0">
+                    arrow_forward
+                  </span>
+                </a>
               </div>
-              <span className={`material-symbols-outlined text-[var(--text-sub)] group-hover:text-[var(--text-accent)] transition-colors ${isRtl ? 'rotate-90' : ''}`}>
-                north_east
-              </span>
-            </motion.a>
+            </div>
           </div>
 
-          {/* Local Time Widget */}
-          <div className="p-6 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] shadow-lg relative overflow-hidden">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-bold uppercase tracking-widest text-[var(--text-sub)]">
+          {/* Sana'a Local Time Widget */}
+          <div className="glass-card p-6 rounded-2xl border border-white/10 flex items-center justify-between">
+            <div>
+              <p className="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider mb-1">
                 {t.contactPage.localTime}
               </p>
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--bg-accent)] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--bg-accent)]"></span>
-              </span>
+              <div className="text-headline-md font-headline-md text-primary font-mono">
+                {sanaaTime || '12:00:00 PM'}
+              </div>
             </div>
-            <p className="font-serif text-2xl font-bold text-[var(--text-accent)]">
-              {sanaaTime || 'Calculating...'}
-            </p>
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+              <span className="material-symbols-outlined text-2xl">schedule</span>
+            </div>
           </div>
         </motion.div>
       </div>
-
-      {/* Beyond the Code: Bento Section */}
-      <section className="mt-20">
-        <div className="mb-8">
-          <h2 className="font-serif text-3xl font-bold text-[var(--text-main)] mb-2">
-            {t.contactPage.beyondTitle}
-          </h2>
-          <p className="text-sm text-[var(--text-sub)]">
-            {t.contactPage.beyondSub}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Leadership & Project Management Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="md:col-span-8 bg-[var(--bg-card)] border border-[var(--border-color)] p-8 rounded-2xl flex flex-col justify-between hover:border-[var(--bg-accent)] transition-all shadow-xl"
-          >
-            <div className="max-w-xl">
-              <span className="material-symbols-outlined text-[var(--text-accent)] text-4xl mb-4">
-                groups
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-[var(--text-main)] mb-3">
-                {t.contactPage.leadershipTitle}
-              </h3>
-              <p className="text-sm text-[var(--text-sub)] leading-relaxed">
-                {t.contactPage.leadershipDesc}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2 mt-6">
-              {portfolioData.skills.softSkills.slice(0, 6).map((skill, idx) => (
-                <span
-                  key={idx}
-                  className="px-3 py-1 bg-[var(--bg-card-sub)] text-[var(--text-sub)] font-semibold text-xs rounded-full border border-[var(--border-color)]"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Languages & Adaptability Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="md:col-span-4 bg-[var(--bg-card)] border border-[var(--border-color)] p-8 rounded-2xl flex flex-col justify-between hover:border-[var(--bg-accent)] transition-all shadow-xl"
-          >
-            <div>
-              <span className="material-symbols-outlined text-[var(--text-accent)] text-4xl mb-4">
-                translate
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-[var(--text-main)] mb-3">
-                {t.contactPage.languagesTitle}
-              </h3>
-              <div className="space-y-3 mt-4">
-                {portfolioData.skills.spokenLanguages.map((lang, idx) => (
-                  <div key={idx} className="flex justify-between items-center text-sm">
-                    <span className="font-bold text-[var(--text-main)]">{lang.name}</span>
-                    <span className="text-xs text-[var(--text-accent-on)] font-bold bg-[var(--bg-accent)] px-2.5 py-1 rounded">
-                      {lang.level}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-[var(--border-color)]">
-              <p className="text-xs text-[var(--text-sub)]">
-                {t.contactPage.languagesDesc}
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 };

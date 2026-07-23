@@ -89,10 +89,13 @@ export const ParticleBackground: React.FC = () => {
           p.alpha = p.baseAlpha;
         }
 
+        const isLight = document.documentElement.classList.contains('light');
+        const rGba = isLight ? '94, 65, 208' : '183, 148, 244';
+
         // Render dot
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(123, 208, 255, ${p.alpha})`;
+        ctx.fillStyle = `rgba(${rGba}, ${p.alpha})`;
         ctx.fill();
 
         // Connect nearby particles
@@ -107,7 +110,7 @@ export const ParticleBackground: React.FC = () => {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(123, 208, 255, ${lineAlpha})`;
+            ctx.strokeStyle = `rgba(${rGba}, ${lineAlpha})`;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }

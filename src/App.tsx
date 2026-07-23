@@ -28,7 +28,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#101415] text-[#e0e3e5] font-sans selection:bg-[#7bd0ff] selection:text-[#001e2c] relative">
+    <div className="min-h-screen flex flex-col bg-[var(--bg-app)] text-[var(--text-main)] font-sans selection:bg-[#b794f4]/30 selection:text-[var(--text-accent)] relative transition-colors duration-300">
       {/* Interactive Particle Constellation Canvas */}
       <ParticleBackground />
 
@@ -40,7 +40,7 @@ export function App() {
       />
 
       {/* Main Page Content Area with Animated Page Switching */}
-      <main className="flex-1 mt-16 relative z-10">
+      <main className="flex-1 relative z-10">
         <AnimatePresence mode="wait">
           {activePage === 'home' && (
             <motion.div
