@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from '../utils/motion';
 import { portfolioData, type ProjectItem } from '../data/portfolioData';
 import { useApp } from '../context/AppContext';
 import type { PageTab } from '../App';
+import { ProjectModal } from '../components/ProjectModal';
 
 interface ProjectsPageProps {
   onSelectProject?: (project: ProjectItem) => void;
@@ -15,6 +16,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
 }) => {
   const { t } = useApp();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
   const categories = [
     { id: 'All', label: t.projectsPage.categories.All },
@@ -28,11 +30,24 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
       ? portfolioData.projects
       : portfolioData.projects.filter((p) => p.category === selectedCategory);
 
+  const getCategoryCount = (category: string) =>
+    category === 'All'
+      ? portfolioData.projects.length
+      : portfolioData.projects.filter((project) => project.category === category).length;
+
+  const handleProjectSelect = (project: ProjectItem) => {
+    if (onSelectProject) {
+      onSelectProject(project);
+      return;
+    }
+    setSelectedProject(project);
+  };
+
   return (
     <div className="relative pt-24 pb-24">
-      {/* Background Aurora Glow */}
-      <div className="aurora-glow top-[-200px] left-[-200px]"></div>
-      <div className="aurora-glow bottom-[-200px] right-[-200px]"></div>
+      {/* Signature background glow */}
+      <div className="portfolio-glow top-[-200px] left-[-200px]"></div>
+      <div className="portfolio-glow bottom-[-200px] right-[-200px]"></div>
 
       {/* Hero Section */}
       <section className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop mb-12 text-left rtl:text-right">
@@ -58,6 +73,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
+                aria-pressed={isActive}
                 className={`relative px-5 py-2.5 rounded-full text-label-sm font-label-sm transition-all focus:outline-none cursor-pointer ${
                   isActive
                     ? 'primary-btn-gradient text-on-primary font-bold shadow-lg shadow-primary/20 scale-105'
@@ -65,6 +81,11 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
                 }`}
               >
                 {cat.label}
+                <span className={`ms-2 rounded-full px-1.5 py-0.5 text-[10px] ${
+                  isActive ? 'bg-on-primary/15 text-on-primary' : 'bg-primary/10 text-primary'
+                }`}>
+                  {getCategoryCount(cat.id)}
+                </span>
               </button>
             );
           })}
@@ -76,7 +97,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
         <motion.div layout className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
           <AnimatePresence>
             {filteredProjects.map((project, index) => {
-              const isLarge = index % 3 === 0;
+              const isLarge = index % 4 === 0 || index % 4 === 3;
 
               return (
                 <motion.div
@@ -86,27 +107,52 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4 }}
-                  onClick={() => onSelectProject && onSelectProject(project)}
+                  onClick={() => handleProjectSelect(project)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      handleProjectSelect(project);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${t.projectsPage.quickView}: ${project.title}`}
                   className={`${
                     isLarge ? 'md:col-span-8' : 'md:col-span-4'
-                  } group cursor-pointer text-left rtl:text-right`}
+                  } group cursor-pointer rounded-xl text-left outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-surface rtl:text-right`}
                 >
-                  <div className="glass-card rounded-xl overflow-hidden h-full flex flex-col hover:shadow-[0_0_40px_rgba(142,205,255,0.15)] transition-all duration-500">
+                  <div className="glass-card rounded-xl overflow-hidden h-full flex flex-col hover:shadow-[0_0_40px_rgba(142,205,255,0.15)] transition-all duration-500 group-hover:-translate-y-1">
                     {/* Image Thumbnail Header */}
                     <div className="relative h-64 md:h-80 w-full overflow-hidden">
                       <img
                         src={project.imageUrl}
                         alt={project.imageAlt || project.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-70"></div>
-                      <div className="absolute top-6 left-6 rtl:right-6 rtl:left-auto flex gap-2">
-                        <span className="bg-primary/20 text-primary text-label-sm px-3 py-1 rounded-full backdrop-blur-md border border-primary/20">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-black/10"></div>
+                      <div className="absolute top-6 left-6 rtl:right-6 rtl:left-auto flex max-w-[calc(100%-3rem)] flex-wrap gap-2">
+                        <span className="project-image-tag text-label-sm px-3 py-1 rounded-full backdrop-blur-md">
                           {t.projectsPage.categories[project.category] || project.category}
                         </span>
                         {project.featured && (
-                          <span className="bg-secondary/20 text-secondary text-label-sm px-3 py-1 rounded-full backdrop-blur-md border border-secondary/20">
+                          <span className="project-image-tag project-image-tag--featured text-label-sm px-3 py-1 rounded-full backdrop-blur-md">
                             {t.projectsPage.featuredBadge}
+                          </span>
+                        )}
+                        {project.visibility === 'private' && (
+                          <span className="project-image-tag project-image-tag--private text-label-sm px-3 py-1 rounded-full backdrop-blur-md inline-flex items-center gap-1.5">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <rect x="4" y="10" width="16" height="11" rx="2" />
+                              <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                            </svg>
+                            {t.projectsPage.privateBadge}
+                          </span>
+                        )}
+                        {project.collaboration && (
+                          <span className="project-image-tag project-image-tag--collaboration text-label-sm px-3 py-1 rounded-full backdrop-blur-md">
+                            {t.projectsPage.collaborationBadge}
                           </span>
                         )}
                       </div>
@@ -128,9 +174,21 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
                           target="_blank"
                           rel="noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="material-symbols-outlined text-secondary text-3xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform flex-shrink-0"
+                          aria-label={`${project.visibility === 'private' ? t.projectsPage.privateRepoCode : t.projectsPage.repoCode}: ${project.title}`}
+                          title={project.visibility === 'private' ? t.projectsPage.privateRepoCode : t.projectsPage.repoCode}
+                          className="text-secondary group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform flex-shrink-0"
                         >
-                          arrow_outward
+                          {project.visibility === 'private' ? (
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <rect x="4" y="10" width="16" height="11" rx="2" />
+                              <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                            </svg>
+                          ) : (
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <path d="M7 17 17 7" />
+                              <path d="M7 7h10v10" />
+                            </svg>
+                          )}
                         </a>
                       </div>
 
@@ -176,10 +234,15 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
             className="primary-btn-gradient text-on-primary px-8 py-4 rounded-lg font-bold text-label-md font-label-md shadow-lg hover:brightness-110 transition-all inline-flex items-center gap-2 cursor-pointer"
           >
             {t.projectsPage.ctaButton}
-            <span className="material-symbols-outlined text-xl">send</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m3 3 18 9-18 9 4-9Z" />
+              <path d="M7 12h14" />
+            </svg>
           </motion.button>
         </motion.div>
       </section>
+
+      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </div>
   );
 };

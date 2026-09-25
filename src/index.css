@@ -46,7 +46,7 @@
   --spacing-base: 8px;
 }
 
-/* Aurora Midnight (Dark Theme) Default */
+/* Mohammed Signature Dark Theme (Default) */
 :root, :root.dark {
   --surface: #081425;
   --surface-dim: #081425;
@@ -96,7 +96,7 @@
   --btn-text-color: #3e1975;
 }
 
-/* Aurora Modern (Light Theme) */
+/* Mohammed Signature Light Theme */
 :root.light {
   --surface: #fbf8ff;
   --surface-dim: #d8d8f1;
@@ -265,6 +265,57 @@ body {
   border: 1px solid rgba(201, 196, 215, 0.6);
 }
 
+/* Image-overlay tags use opaque, high-contrast pairs in both themes. */
+.project-image-tag {
+  color: #f7f4ff;
+  background: rgba(8, 20, 37, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+  font-weight: 600;
+}
+
+.project-image-tag--featured {
+  color: #24103f;
+  background: rgba(212, 187, 255, 0.94);
+  border-color: rgba(255, 255, 255, 0.46);
+}
+
+.project-image-tag--private {
+  color: #281a00;
+  background: rgba(255, 203, 103, 0.95);
+  border-color: rgba(255, 242, 209, 0.72);
+}
+
+.project-image-tag--collaboration {
+  color: #041c28;
+  background: rgba(175, 229, 255, 0.95);
+  border-color: rgba(233, 249, 255, 0.68);
+}
+
+.light .project-image-tag {
+  color: #ffffff;
+  background: rgba(24, 26, 44, 0.88);
+  border-color: rgba(255, 255, 255, 0.42);
+}
+
+.light .project-image-tag--featured {
+  color: #ffffff;
+  background: rgba(94, 65, 208, 0.94);
+  border-color: rgba(255, 255, 255, 0.56);
+}
+
+.light .project-image-tag--private {
+  color: #2c1c00;
+  background: rgba(255, 190, 61, 0.96);
+  border-color: rgba(255, 255, 255, 0.72);
+}
+
+.light .project-image-tag--collaboration {
+  color: #ffffff;
+  background: rgba(0, 100, 148, 0.94);
+  border-color: rgba(255, 255, 255, 0.64);
+}
+
 /* Gradients with Bottom Padding to Prevent Text Clipping on Descenders */
 .hero-gradient, .text-gradient {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
@@ -273,6 +324,18 @@ body {
   padding-bottom: 0.28em;
   padding-top: 0.05em;
   display: inline-block;
+}
+
+/* Keep the animated English name on one line without overflowing narrow layouts. */
+.hero-copy {
+  container-type: inline-size;
+}
+
+.hero-name-single-line {
+  max-width: 100%;
+  white-space: nowrap;
+  font-size: clamp(1.35rem, 7.5cqw, 3.25rem);
+  line-height: 1.15;
 }
 
 .primary-btn-gradient, .primary-gradient-btn {
@@ -287,7 +350,7 @@ body {
   box-shadow: 0 0 20px rgba(183, 148, 244, 0.35);
 }
 
-.aurora-blur, .aurora-glow {
+.portfolio-blur, .portfolio-glow {
   position: absolute;
   width: 500px;
   height: 500px;
@@ -297,7 +360,7 @@ body {
   pointer-events: none;
 }
 
-.light .aurora-blur, .light .aurora-glow {
+.light .portfolio-blur, .light .portfolio-glow {
   background: radial-gradient(circle, rgba(94, 65, 208, 0.1) 0%, rgba(94, 237, 253, 0.05) 50%, transparent 100%);
 }
 
@@ -368,13 +431,10 @@ body {
   animation: floatSlow 5s ease-in-out infinite;
 }
 
-/* Page Margins for Print: Provides 16mm top & bottom page clearance to avoid text trimming */
+/* The CV owns its printable safe area so browser margin presets cannot clip content. */
 @page {
   size: A4 portrait;
-  margin-top: 16mm;
-  margin-bottom: 16mm;
-  margin-left: 8mm;
-  margin-right: 8mm;
+  margin: 0;
 }
 
 /* Print Media Formatting - Full Theme Preservation & Transparent Element Backgrounds */
@@ -400,8 +460,8 @@ body {
   footer,
   nav,
   canvas,
-  .aurora-blur,
-  .aurora-glow,
+  .portfolio-blur,
+  .portfolio-glow,
   .cv-modal-backdrop,
   .cv-modal-header {
     display: none !important;
@@ -440,10 +500,23 @@ body {
     max-height: none !important;
     height: auto !important;
     width: 100% !important;
-    padding: 0 !important;
+    /* Replaces browser-controlled margins with a reliable document safe area. */
+    padding: 12mm 14mm 14mm !important;
+    margin: 0 !important;
     background: var(--surface) !important;
     color: var(--on-surface) !important;
     box-sizing: border-box !important;
+    -webkit-box-decoration-break: clone !important;
+    box-decoration-break: clone !important;
+  }
+
+  .cv-modal-scroll h1,
+  .cv-modal-scroll h2,
+  .cv-modal-scroll h3,
+  .cv-modal-scroll h4,
+  .cv-modal-scroll p,
+  .cv-modal-scroll span {
+    overflow-wrap: anywhere;
   }
 
   .cv-modal-scroll .bg-surface-container,

@@ -32,6 +32,13 @@ export const ar: typeof en = {
   expertise: {
     sectionTitle: 'الخبرات التقنية الأساسية',
     subtitle: 'قدرات تقنية متقدمة في تطوير الأنظمة البرمجية الحديثة.',
+    languageEvidenceBadge: 'مهارات موثقة بالمستودعات',
+    projectLanguagesTitle: 'لغات مثبتة في مشاريع حقيقية',
+    projectLanguagesSubtitle:
+      'عرض واضح للغات التطوير المستخدمة في مشاريعي لتطبيقات الجوال والويب والخدمات الخلفية والبيانات، ومدعوم بالمستودعات المعروضة في هذا الموقع.',
+    languagesInUse: 'لغات مستخدمة',
+    repositorySingular: 'مشروع',
+    repositoryPlural: 'مشاريع',
     categories: [
       {
         title: 'تطبيقات الجوال والأنظمة المتعددة',
@@ -51,7 +58,7 @@ export const ar: typeof en = {
       {
         title: 'اللغات الحديثة وأدوات التطوير',
         description:
-          'هندسة برمجية دقيقة بـ TypeScript و C# و C++ مع أتمتة Git و CI/CD.',
+          'تطوير موثق بالمستودعات عبر اللغات الصارمة والبرمجية ولغات الأنظمة والويب مع أدوات تسليم حديثة.',
       },
     ],
   },
@@ -65,9 +72,9 @@ export const ar: typeof en = {
     crafting: 'صناعة',
     digitalExcellence: 'التميز الرقمي',
     throughDesignCode: 'بين التصميم والبرمجة',
-    title: 'معرض المشاريع التفاعلي',
+    title: 'معرض مشاريع GitHub',
     subtitle:
-      'عرض مختار للحلول الهندسية التي تم بناؤها باستخدام Kotlin Compose و KMP و Kotlin Native و React Native و Flutter و Go و PHP/Laravel و TypeScript. انقر على أي مشروع للتفاصيل التقنية.',
+      'المستودعات العامة ونماذج مختارة من المشاريع الخاصة التعاونية في حسابي على GitHub، وتشمل تطبيقات الجوال وأنظمة الويب وخدمات الخادم وأدوات الأمان والتجارب. اختر أي مشروع لعرض تفاصيله التقنية.',
     filter: 'تصفية الفئة:',
     categories: {
       All: 'الكل',
@@ -76,8 +83,11 @@ export const ar: typeof en = {
       'Full Stack': 'أنظمة متكاملة',
     },
     featuredBadge: 'مميز',
+    privateBadge: 'خاص',
+    collaborationBadge: 'مشروع تعاوني',
     quickView: 'نظرة سريعة',
     repoCode: 'شفرة المستودع',
+    privateRepoCode: 'مستودع خاص',
     ctaTitle: 'هل لديك مشروع أو فرصة عمل؟',
     ctaSubtitle:
       'أنا متاح حالياً لأدوار هندسية كاملة، وفرص تطوير البرمجيات، والاستشارات التقنية. لنبنِ أنظمة قوية معاً.',
@@ -88,6 +98,7 @@ export const ar: typeof en = {
     techUsed: 'التقنيات والأدوات المستخدمة',
     primaryLanguage: 'اللغة الأساسية',
     viewGithub: 'عرض مستودع GitHub',
+    viewPrivateGithub: 'فتح المستودع الخاص',
   },
   experiencePage: {
     badge: 'المحطات والخبرات',
@@ -115,7 +126,7 @@ export const ar: typeof en = {
     nameLabel: 'الاسم',
     namePlaceholder: 'أحمد المحمدي',
     emailLabel: 'البريد الإلكتروني',
-    emailPlaceholder: 'your@company.com',
+    emailPlaceholder: 'you@company.com',
     subjectLabel: 'الموضوع',
     subjectOptions: {
       collab: 'تعاون في مشروع',
@@ -160,7 +171,7 @@ export const ar: typeof en = {
   experiencesData: {
     'exp-1': {
       role: 'مطور تطبيقات جوال ومدير مشاريع',
-      company: 'شركة أريكة للحلول الرقمية',
+      company: 'شركة سوفا للحلول الرقمية',
       location: 'صنعاء، اليمن',
       period: 'أبريل 2025 – الحالي',
       description:

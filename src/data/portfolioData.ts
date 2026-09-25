@@ -36,6 +36,8 @@ export interface ProjectItem {
   githubUrl: string;
   liveUrl?: string;
   featured?: boolean;
+  visibility?: 'public' | 'private';
+  collaboration?: boolean;
   imageAlt: string;
   imageUrl: string;
 }
@@ -68,6 +70,7 @@ export const portfolioData = {
       'Kotlin Native',
       'React Native',
       'Flutter',
+      'Dart',
       'Go',
       'TypeScript',
       'JavaScript',
@@ -77,6 +80,9 @@ export const portfolioData = {
       'Java',
       'C#',
       'C++',
+      'HTML5',
+      'CSS / SCSS',
+      'SQL',
       'MySQL',
       'PostgreSQL'
     ],
@@ -102,8 +108,8 @@ export const portfolioData = {
       {
         title: 'Modern Languages & Tooling',
         icon: 'terminal',
-        description: 'Strictly typed engineering with TypeScript, C#, C++, Git, and CI/CD automation.',
-        skills: ['TypeScript', 'JavaScript', 'C#', 'C++', 'Git / GitHub']
+        description: 'Repository-backed development across typed, scripting, systems, and web languages with modern delivery tooling.',
+        skills: ['TypeScript', 'JavaScript', 'Dart', 'Go', 'PHP', 'C#', 'C++', 'Git / GitHub']
       }
     ],
     softSkills: [
@@ -242,6 +248,63 @@ export const portfolioData = {
 
   projects: [
     {
+      id: 'proj-tihamah-dashboard',
+      title: 'Tihamah Souq Admin Dashboard',
+      description:
+        'A bilingual marketplace administration dashboard for the Tihamah region, featuring role-aware workflows, operational analytics, accessible data tables, CSV exports, and tested Arabic RTL support.',
+      category: 'Web Systems',
+      language: 'TypeScript / React',
+      technologies: ['React', 'TypeScript', 'Vite', 'Refine', 'Playwright'],
+      githubUrl: 'https://github.com/MohammedFu/Tihamah-Sooq',
+      featured: true,
+      visibility: 'private',
+      imageAlt: 'Tihamah Souq bilingual marketplace administration dashboard',
+      imageUrl: '/images/project-2.png'
+    },
+    {
+      id: 'proj-tihamah-backend',
+      title: 'Tihamah Haraj Backend',
+      description:
+        'A Go backend serving the Tihamah marketplace dashboard and mobile clients, with documented client integration, dynamic role-based access, configurable listing workflows, and containerized deployment support.',
+      category: 'Web Systems',
+      language: 'Go',
+      technologies: ['Go', 'REST API', 'Dynamic RBAC', 'Docker', 'SQLite'],
+      githubUrl: 'https://github.com/Fawaz-Abu-Abdel/Tihamah-Haraj',
+      featured: false,
+      visibility: 'private',
+      collaboration: true,
+      imageAlt: 'Tihamah Haraj marketplace backend and dashboard integration project',
+      imageUrl: '/images/engineering-environment-banner.png'
+    },
+    {
+      id: 'proj-tihamah-mobile',
+      title: 'Tihamah Souq Mobile',
+      description:
+        'A Kotlin Multiplatform marketplace client with shared application code and design foundations for Android and iOS, built as the mobile experience for the Tihamah Haraj platform.',
+      category: 'Mobile Apps',
+      language: 'Kotlin Multiplatform',
+      technologies: ['Kotlin', 'Compose Multiplatform', 'Android', 'iOS', 'Shared UI'],
+      githubUrl: 'https://github.com/shehab-go/tahamhSaouq',
+      featured: false,
+      visibility: 'private',
+      collaboration: true,
+      imageAlt: 'Tihamah Souq Kotlin Multiplatform mobile marketplace application',
+      imageUrl: '/images/project-1.png'
+    },
+    {
+      id: 'proj-devjourney',
+      title: 'DevJourney Portfolio',
+      description:
+        'A responsive bilingual portfolio and digital CV built with React, TypeScript, Vite, and Tailwind CSS, with theme switching, project filtering, and print-ready résumé views.',
+      category: 'Web Systems',
+      language: 'TypeScript / React',
+      technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Responsive UI'],
+      githubUrl: 'https://github.com/MohammedFu/DevJourney',
+      featured: true,
+      imageAlt: 'Developer workspace representing the DevJourney React and TypeScript portfolio project',
+      imageUrl: '/images/engineering-environment-banner.png'
+    },
+    {
       id: 'proj-1',
       title: 'LM-E-mart Mobile SaaS App',
       description:
@@ -262,9 +325,61 @@ export const portfolioData = {
       category: 'Web Systems',
       language: 'PHP / Laravel',
       technologies: ['PHP', 'Laravel', 'MySQL', 'Quality Assurance', 'Role-Based Access'],
-      githubUrl: 'https://github.com/MohammedFu',
+      githubUrl: 'https://github.com/MohammedFu/University-Quality-Assurance-Web',
       featured: true,
       imageAlt: 'Academic quality assurance web analytics dashboard with metrics, evaluation charts, and audit workflow status',
+      imageUrl: '/images/project-2.png'
+    },
+    {
+      id: 'proj-meals',
+      title: 'Meals Notebook App',
+      description:
+        'A mobile meal notebook for saving recipes and organizing step-by-step cooking instructions in one convenient place.',
+      category: 'Mobile Apps',
+      language: 'JavaScript',
+      technologies: ['JavaScript', 'React Native', 'Recipe Management', 'Mobile UI'],
+      githubUrl: 'https://github.com/MohammedFu/Meals_App',
+      featured: false,
+      imageAlt: 'Mobile meal and recipe notebook application preview',
+      imageUrl: '/images/project-4.png'
+    },
+    {
+      id: 'proj-phishing',
+      title: 'PhishDetect Android App',
+      description:
+        'An Android URL safety app that scans links before opening, reports threat levels, stores local scan history, and accepts shared links from other apps.',
+      category: 'Mobile Apps',
+      language: 'Kotlin / Android',
+      technologies: ['Kotlin', 'Android', 'URL Analysis', 'Local History', 'Share Intent'],
+      githubUrl: 'https://github.com/MohammedFu/Phishing_Detector_App',
+      featured: true,
+      imageAlt: 'Android security application interface for checking suspicious links',
+      imageUrl: '/images/project-7.png'
+    },
+    {
+      id: 'proj-quality-mobile',
+      title: 'University Quality Assurance Mobile App',
+      description:
+        'A Flutter mobile application for tracking learning-outcome progress through a standardized academic quality-assurance workflow.',
+      category: 'Mobile Apps',
+      language: 'Dart / Flutter',
+      technologies: ['Flutter', 'Dart', 'Learning Outcomes', 'Quality Assurance', 'REST API'],
+      githubUrl: 'https://github.com/MohammedFu/University-Quality-Assurance-Mobile-App',
+      featured: false,
+      imageAlt: 'University quality assurance mobile application interface',
+      imageUrl: '/images/project-2.png'
+    },
+    {
+      id: 'proj-quality-backend',
+      title: 'Quality Assurance Mobile Backend',
+      description:
+        'The PHP backend service powering the University Quality Assurance mobile application and its academic progress workflows.',
+      category: 'Web Systems',
+      language: 'PHP',
+      technologies: ['PHP', 'REST API', 'Backend Services', 'Academic Workflows'],
+      githubUrl: 'https://github.com/MohammedFu/University-Quality-Assurance-Mobile-Backend',
+      featured: false,
+      imageAlt: 'Backend dashboard representing university quality assurance services',
       imageUrl: '/images/project-2.png'
     },
     {
@@ -278,6 +393,19 @@ export const portfolioData = {
       githubUrl: 'https://github.com/MohammedFu/event-booking-system',
       featured: true,
       imageAlt: 'Event and wedding multi-service booking mobile app interface displaying venue listings and photographer packages',
+      imageUrl: '/images/project-3.png'
+    },
+    {
+      id: 'proj-wedding-halls',
+      title: 'Wedding Halls Booking',
+      description:
+        'A Flutter booking application for coordinating wedding halls, vehicles, photographers, entertainers, and related event services.',
+      category: 'Mobile Apps',
+      language: 'Dart / Flutter',
+      technologies: ['Flutter', 'Dart', 'Venue Booking', 'Service Marketplace', 'Mobile UI'],
+      githubUrl: 'https://github.com/MohammedFu/wedding-halls-booking',
+      featured: false,
+      imageAlt: 'Wedding hall and event services booking application preview',
       imageUrl: '/images/project-3.png'
     },
     {
@@ -331,6 +459,19 @@ export const portfolioData = {
       featured: false,
       imageAlt: 'Cross-platform mobile CRUD app displaying structured lists and item edit modals',
       imageUrl: '/images/project-7.png'
+    },
+    {
+      id: 'proj-gmn',
+      title: 'Guess My Number Game',
+      description:
+        'A playful mobile number-guessing game where the user chooses a number and the device narrows down the answer through guided guesses.',
+      category: 'Mobile Apps',
+      language: 'JavaScript',
+      technologies: ['JavaScript', 'React Native', 'Game Logic', 'Mobile UI'],
+      githubUrl: 'https://github.com/MohammedFu/GMN_Game',
+      featured: false,
+      imageAlt: 'Mobile number guessing game interface',
+      imageUrl: '/images/project-6.png'
     }
   ] as ProjectItem[]
 };

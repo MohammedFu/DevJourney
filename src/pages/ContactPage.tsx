@@ -49,8 +49,8 @@ export const ContactPage: React.FC = () => {
   return (
     <div className="relative pt-24 pb-24 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
       {/* Background Atmospheric Glow */}
-      <div className="aurora-glow bg-primary w-[500px] h-[500px] -top-40 -left-40"></div>
-      <div className="aurora-glow bg-secondary w-[400px] h-[400px] top-1/2 -right-20"></div>
+      <div className="portfolio-glow bg-primary w-[500px] h-[500px] -top-40 -left-40"></div>
+      <div className="portfolio-glow bg-secondary w-[400px] h-[400px] top-1/2 -right-20"></div>
 
       {/* Hero Header */}
       <section className="mb-12 text-left rtl:text-right">

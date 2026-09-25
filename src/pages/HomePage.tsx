@@ -10,8 +10,27 @@ interface HomePageProps {
   onOpenCvModal: () => void;
 }
 
+const projectLanguageDefinitions = [
+  { name: 'TypeScript', shortName: 'TS', aliases: ['typescript'] },
+  { name: 'JavaScript', shortName: 'JS', aliases: ['javascript', 'vue.js'] },
+  { name: 'Kotlin', shortName: 'KT', aliases: ['kotlin'] },
+  { name: 'Dart', shortName: 'DART', aliases: ['dart'] },
+  { name: 'PHP', shortName: 'PHP', aliases: ['php'] },
+  { name: 'Go', shortName: 'GO', aliases: ['go'] },
+  { name: 'SQL', shortName: 'SQL', aliases: ['mysql', 'postgresql', 'sqlite'] },
+  { name: 'HTML & CSS', shortName: 'WEB', aliases: ['html', 'css', 'tailwind'] },
+];
+
+const projectLanguageStats = projectLanguageDefinitions.map((language) => ({
+  ...language,
+  projectCount: portfolioData.projects.filter((project) => {
+    const projectStack = [project.language, ...project.technologies].join(' ').toLowerCase();
+    return language.aliases.some((alias) => projectStack.includes(alias));
+  }).length,
+}));
+
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal }) => {
-  const { t, isRtl } = useApp();
+  const { t, isRtl, language } = useApp();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -35,9 +54,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
 
   return (
     <div className="pt-24 pb-20 relative">
-      {/* Background Aurora Blur Blobs */}
-      <div className="aurora-blur top-[-100px] left-[-100px]"></div>
-      <div className="aurora-blur bottom-[10%] right-[-100px] opacity-70"></div>
+      {/* Signature background blur accents */}
+      <div className="portfolio-blur top-[-100px] left-[-100px]"></div>
+      <div className="portfolio-blur bottom-[10%] right-[-100px] opacity-70"></div>
 
       {/* Hero Section */}
       <section className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center min-h-[75vh] py-10">
@@ -46,7 +65,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="lg:col-span-7 order-2 lg:order-1 text-left rtl:text-right"
+          className="hero-copy lg:col-span-7 order-2 lg:order-1 text-left rtl:text-right"
         >
           {/* Status Badge */}
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary mb-6">
@@ -59,7 +78,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
             <span className="text-lg sm:text-xl md:text-2xl lg:text-[26px] text-on-surface-variant font-medium">
               {t.hero.hi}
             </span>
-            <span className="hero-gradient text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-bold pb-2 inline-block">
+            <span
+              className={`hero-gradient font-bold pb-2 inline-block ${
+                language === 'en'
+                  ? 'hero-name-single-line'
+                  : 'text-3xl sm:text-4xl md:text-5xl lg:text-[52px]'
+              }`}
+            >
               <TypewriterText words={[t.hero.name]} />
             </span>
           </motion.h1>
@@ -150,8 +175,76 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
         </motion.div>
       </section>
 
+      {/* Repository-backed Programming Languages */}
+      <section className="mt-20 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.55 }}
+          className="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden text-left rtl:text-right"
+        >
+          <div className="absolute -top-24 -right-24 rtl:-left-24 rtl:right-auto w-64 h-64 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
+
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 mb-7">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 text-secondary text-label-sm font-label-sm uppercase tracking-widest mb-3">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14" />
+                </svg>
+                {t.expertise.languageEvidenceBadge}
+              </div>
+              <h2 className="text-headline-lg font-headline-lg text-on-surface mb-2">
+                {t.expertise.projectLanguagesTitle}
+              </h2>
+              <p className="text-on-surface-variant text-body-md font-body-md leading-relaxed">
+                {t.expertise.projectLanguagesSubtitle}
+              </p>
+            </div>
+
+            <div className="flex items-baseline gap-2 shrink-0">
+              <span className="text-headline-xl font-headline-xl text-primary leading-none">
+                {projectLanguageStats.length}
+              </span>
+              <span className="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">
+                {t.expertise.languagesInUse}
+              </span>
+            </div>
+          </div>
+
+          <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 gap-3">
+            {projectLanguageStats.map((language, index) => (
+              <motion.div
+                key={language.name}
+                initial={{ opacity: 0, scale: 0.92 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: index * 0.045 }}
+                whileHover={{ y: -4 }}
+                className="rounded-2xl border border-outline-variant/30 bg-surface-container/70 px-4 py-4 min-h-28 flex flex-col justify-between transition-colors hover:border-primary/50 hover:bg-surface-container-high"
+              >
+                <span className="w-10 h-10 inline-flex items-center justify-center rounded-xl bg-primary/12 border border-primary/20 text-primary text-label-sm font-label-sm font-bold tracking-tight">
+                  {language.shortName}
+                </span>
+                <div className="mt-4">
+                  <h3 className="text-body-md font-bold text-on-surface leading-tight">
+                    {language.name}
+                  </h3>
+                  <p className="mt-1 text-[11px] font-label-sm text-on-surface-variant uppercase tracking-wide">
+                    {language.projectCount}{' '}
+                    {language.projectCount === 1
+                      ? t.expertise.repositorySingular
+                      : t.expertise.repositoryPlural}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
       {/* Core Expertise Bento Grid */}
-      <section className="mt-32 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
+      <section className="mt-28 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
