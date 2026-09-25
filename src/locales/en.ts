@@ -10,7 +10,7 @@ export const en = {
   hero: {
     status: 'Available for Developer & Lead Roles',
     hi: "Hi, I'm",
-    name: 'Mohammed Fuad Al_Sanhani',
+    name: 'Mohammed F. Al-Sanhani',
     title: 'Software Developer & Enterprise Solution Architect',
     location: "Zubairy St., Sana'a, Yemen",
     building: 'Software Engineer',
@@ -30,6 +30,13 @@ export const en = {
   expertise: {
     sectionTitle: 'Core Technical Expertise',
     subtitle: 'Advanced technical capabilities in modern ecosystem development.',
+    languageEvidenceBadge: 'Repository-backed skills',
+    projectLanguagesTitle: 'Languages Proven in Real Projects',
+    projectLanguagesSubtitle:
+      'A transparent view of the development languages used across my mobile, web, backend, and data projects—supported by the repositories in this portfolio.',
+    languagesInUse: 'Languages in use',
+    repositorySingular: 'project',
+    repositoryPlural: 'projects',
     categories: [
       {
         title: 'Mobile & Multiplatform',
@@ -49,7 +56,7 @@ export const en = {
       {
         title: 'Modern Languages & Tooling',
         description:
-          'Strictly typed engineering with TypeScript, C#, C++, Git, and CI/CD automation.',
+          'Repository-backed development across typed, scripting, systems, and web languages with modern delivery tooling.',
       },
     ],
   },
@@ -63,9 +70,9 @@ export const en = {
     crafting: 'Crafting',
     digitalExcellence: 'Digital Excellence',
     throughDesignCode: 'Through Design & Code',
-    title: 'Interactive Project Gallery',
+    title: 'GitHub Project Gallery',
     subtitle:
-      'A curated showcase of engineering solutions built across Kotlin Compose, Kotlin Multiplatform (KMP), Kotlin Native, React Native, Flutter, Go, PHP/Laravel, and TypeScript. Click any project card for technical details.',
+      'Public repositories and selected private collaborations from my GitHub profile, spanning mobile apps, web systems, backend services, security tools, and experiments. Select any project for technical details.',
     filter: 'Filter Category:',
     categories: {
       All: 'All',
@@ -74,8 +81,11 @@ export const en = {
       'Full Stack': 'Full Stack',
     },
     featuredBadge: 'Featured',
+    privateBadge: 'Private',
+    collaborationBadge: 'Collaboration',
     quickView: 'Quick View',
     repoCode: 'Repository Code',
+    privateRepoCode: 'Private Repository',
     ctaTitle: 'Have a project or role in mind?',
     ctaSubtitle:
       "I am currently open for full-time engineering roles, software development opportunities, and selective tech consulting. Let's build robust systems together.",
@@ -86,6 +96,7 @@ export const en = {
     techUsed: 'Technologies & Tools Used',
     primaryLanguage: 'Primary Language',
     viewGithub: 'View GitHub Repository',
+    viewPrivateGithub: 'Open Private Repository',
   },
   experiencePage: {
     badge: 'Journey & Milestones',

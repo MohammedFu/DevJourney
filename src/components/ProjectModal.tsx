@@ -25,15 +25,34 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           
           <button
             onClick={onClose}
+            aria-label="Close project details"
             className="absolute top-4 right-4 rtl:left-4 rtl:right-auto p-2 text-white bg-black/60 hover:bg-black/90 rounded-full backdrop-blur-md transition-colors"
           >
-            <span className="material-symbols-outlined text-2xl">close</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+              <path d="m6 6 12 12M18 6 6 18" />
+            </svg>
           </button>
 
           <div className="absolute bottom-4 left-6 right-6 text-left rtl:text-right">
-            <span className="btn-aurora px-3 py-1 rounded-full text-xs font-headline font-bold uppercase tracking-wider mb-2 inline-block shadow-md">
-              {project.category}
-            </span>
+            <div className="flex flex-wrap gap-2 mb-2">
+              <span className="project-image-tag px-3 py-1 rounded-full text-xs font-headline font-bold uppercase tracking-wider inline-block shadow-md">
+                {t.projectsPage.categories[project.category] || project.category}
+              </span>
+              {project.visibility === 'private' && (
+                <span className="project-image-tag project-image-tag--private px-3 py-1 rounded-full text-xs font-headline font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-md">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="4" y="10" width="16" height="11" rx="2" />
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                  </svg>
+                  {t.projectsPage.privateBadge}
+                </span>
+              )}
+              {project.collaboration && (
+                <span className="project-image-tag project-image-tag--collaboration px-3 py-1 rounded-full text-xs font-headline font-bold uppercase tracking-wider inline-block shadow-md">
+                  {t.projectsPage.collaborationBadge}
+                </span>
+              )}
+            </div>
             <h2 className="font-headline text-2xl sm:text-3xl font-bold text-[var(--text-main)]">
               {project.title}
             </h2>
@@ -69,7 +88,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
 
           <div className="border-t border-[var(--border-color)] pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2 text-xs text-[var(--text-sub)] font-mono-code">
-              <span className="material-symbols-outlined text-[var(--text-accent)]">terminal</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-accent)]" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="16" rx="2" />
+                <path d="m7 9 3 3-3 3M13 15h4" />
+              </svg>
               <span>{t.projectModal.primaryLanguage}: <strong className="text-[var(--text-main)]">{project.language}</strong></span>
             </div>
 
@@ -77,10 +99,19 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 btn-aurora px-6 py-3 rounded-full text-xs font-headline font-bold uppercase tracking-wider transition-all active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 primary-btn-gradient text-on-primary px-6 py-3 rounded-full text-xs font-headline font-bold uppercase tracking-wider transition-all active:scale-95"
             >
-              {t.projectModal.viewGithub}
-              <span className="material-symbols-outlined text-base">open_in_new</span>
+              {project.visibility === 'private' ? t.projectModal.viewPrivateGithub : t.projectModal.viewGithub}
+              {project.visibility === 'private' ? (
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="4" y="10" width="16" height="11" rx="2" />
+                  <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                </svg>
+              ) : (
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M14 5h5v5M10 14 19 5M19 14v5H5V5h5" />
+                </svg>
+              )}
             </a>
           </div>
         </div>

@@ -22,10 +22,10 @@ export interface ThemeColorTokens {
 }
 
 export const themeTokens: Record<'light' | 'dark', ThemeColorTokens> = {
-  // Aurora Modern (Light Theme)
+  // Mohammed Signature Light Theme
   light: {
-    id: 'theme-light-aurora',
-    name: 'Aurora Modern',
+    id: 'theme-light-mohammed',
+    name: 'Mohammed Signature Light',
     colors: {
       primary: '#5e41d0',
       onPrimary: '#ffffff',
@@ -45,10 +45,10 @@ export const themeTokens: Record<'light' | 'dark', ThemeColorTokens> = {
       glass: 'rgba(255, 255, 255, 0.85)',
     },
   },
-  // Aurora Midnight (Dark Theme)
+  // Mohammed Signature Dark Theme
   dark: {
-    id: 'theme-dark-aurora',
-    name: 'Aurora Midnight',
+    id: 'theme-dark-mohammed',
+    name: 'Mohammed Signature Dark',
     colors: {
       primary: '#b794f4',
       onPrimary: '#1e0a38',

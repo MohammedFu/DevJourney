@@ -17,7 +17,7 @@ export const Footer: React.FC<FooterProps> = () => {
           {t.nav.brand}
         </div>
         <div className="text-body-md font-body-md text-on-tertiary-fixed-variant text-center md:text-left">
-          © {new Date().getFullYear()} Aurora Portfolio. All rights reserved.
+          © {new Date().getFullYear()} {t.hero.name}. {t.footer.rights}
         </div>
         <div className="flex gap-6 mt-6 md:mt-0">
           <a

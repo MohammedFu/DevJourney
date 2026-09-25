@@ -21,9 +21,9 @@ export const ExperiencePage: React.FC = () => {
 
   return (
     <div className="relative pt-24 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto">
-      {/* Background Aurora Glow Blobs */}
-      <div className="aurora-glow top-20 -left-20"></div>
-      <div className="aurora-glow bottom-20 -right-20"></div>
+      {/* Signature background glow accents */}
+      <div className="portfolio-glow top-20 -left-20"></div>
+      <div className="portfolio-glow bottom-20 -right-20"></div>
 
       {/* Header Section */}
       <header className="mb-16 text-left rtl:text-right">
