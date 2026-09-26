@@ -4,8 +4,8 @@
   "description": "The software development portfolio of Mohammed Al-Sanhani.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#081425",
-  "theme_color": "#081425",
+  "background_color": "#fbf8ff",
+  "theme_color": "#fbf8ff",
   "icons": [
     {
       "src": "/favicon.svg",

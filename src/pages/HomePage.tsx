@@ -59,13 +59,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
       <div className="portfolio-blur bottom-[10%] right-[-100px] opacity-70"></div>
 
       {/* Hero Section */}
-      <section className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center min-h-[75vh] py-10">
+      <section className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-gutter items-center lg:min-h-[75vh] py-6 sm:py-10">
         {/* Text Content */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="hero-copy lg:col-span-7 order-2 lg:order-1 text-left rtl:text-right"
+          className="hero-copy min-w-0 lg:col-span-7 order-1 text-left rtl:text-right"
         >
           {/* Status Badge */}
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary mb-6">
@@ -74,23 +74,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
           </motion.div>
 
           {/* Line 1: Main Headline with Smaller Greeting & Prominent Animated Name (Extra Bottom Spacing for Arabic Descenders) */}
-          <motion.h1 variants={itemVariants} className="font-headline-xl mb-2 tracking-tight leading-relaxed flex flex-wrap items-baseline gap-x-3 pb-3">
+          <motion.h1 variants={itemVariants} className="font-headline-xl mb-2 tracking-tight leading-relaxed flex flex-wrap items-baseline gap-x-3 pb-3 min-w-0">
             <span className="text-lg sm:text-xl md:text-2xl lg:text-[26px] text-on-surface-variant font-medium">
               {t.hero.hi}
             </span>
             <span
-              className={`hero-gradient font-bold pb-2 inline-block ${
+              className={`font-bold pb-2 inline-block max-w-full ${
                 language === 'en'
                   ? 'hero-name-single-line'
                   : 'text-3xl sm:text-4xl md:text-5xl lg:text-[52px]'
               }`}
             >
-              <TypewriterText words={[t.hero.name]} />
+              <TypewriterText key={language} words={[t.hero.name]} />
             </span>
           </motion.h1>
 
           {/* Line 2: Separate Line for Title / Building Text */}
-          <motion.div variants={itemVariants} className="text-on-surface-variant text-headline-lg lg:text-[32px] font-headline font-semibold mb-6">
+          <motion.div variants={itemVariants} className="text-on-surface-variant text-2xl sm:text-headline-lg lg:text-[32px] font-headline font-semibold mb-6">
             {t.hero.building}
           </motion.div>
 
@@ -100,12 +100,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
           </motion.p>
 
           {/* Action Buttons */}
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
               onClick={onOpenCvModal}
-              className="primary-btn-gradient text-on-primary px-8 py-4 rounded-lg font-bold text-label-md font-label-md shadow-lg shadow-primary/20 hover:brightness-110 hover:shadow-primary/30 transition-all flex items-center gap-2 cursor-pointer"
+              className="primary-btn-gradient w-full sm:w-auto justify-center text-on-primary px-6 sm:px-8 py-4 rounded-lg font-bold text-label-md font-label-md shadow-lg shadow-primary/20 hover:brightness-110 hover:shadow-primary/30 transition-all flex items-center gap-2 cursor-pointer"
             >
               {t.hero.downloadCv}
               <span className="material-symbols-outlined text-xl">download</span>
@@ -115,7 +115,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => onNavigate('projects')}
-              className="border border-outline-variant px-8 py-4 rounded-lg font-bold text-label-md font-label-md text-primary hover:bg-white/5 transition-all flex items-center gap-2 cursor-pointer"
+              className="border border-outline-variant w-full sm:w-auto justify-center px-6 sm:px-8 py-4 rounded-lg font-bold text-label-md font-label-md text-primary hover:bg-white/5 transition-all flex items-center gap-2 cursor-pointer"
             >
               {t.hero.viewWork}
               <span className={`material-symbols-outlined text-xl ${isRtl ? 'rotate-180' : ''}`}>
@@ -130,7 +130,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-          className="lg:col-span-5 order-1 lg:order-2 flex justify-center lg:justify-end"
+          className="lg:col-span-5 order-2 flex justify-center lg:justify-end"
         >
           <div className="relative group w-full max-w-[420px]">
             {/* Glassy Frame Glow */}
@@ -143,7 +143,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
               <img
                 src="/images/profile.jpg"
                 alt={portfolioData.personal.name}
-                className="w-full h-[400px] md:h-[460px] object-cover rounded-[32px]"
+                className="hero-portrait w-full md:h-[460px] object-cover rounded-[32px]"
               />
             </motion.div>
 
@@ -176,7 +176,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
       </section>
 
       {/* Repository-backed Programming Languages */}
-      <section className="mt-20 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
+      <section className="mt-14 sm:mt-20 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -194,7 +194,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
                 </svg>
                 {t.expertise.languageEvidenceBadge}
               </div>
-              <h2 className="text-headline-lg font-headline-lg text-on-surface mb-2">
+              <h2 className="text-headline-lg font-headline-lg text-on-surface mb-2 break-words">
                 {t.expertise.projectLanguagesTitle}
               </h2>
               <p className="text-on-surface-variant text-body-md font-body-md leading-relaxed">
@@ -212,7 +212,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
             </div>
           </div>
 
-          <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 gap-3">
+          <div className="relative z-10 grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 gap-3">
             {projectLanguageStats.map((language, index) => (
               <motion.div
                 key={language.name}
@@ -244,7 +244,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
       </section>
 
       {/* Core Expertise Bento Grid */}
-      <section className="mt-28 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
+      <section className="mt-20 sm:mt-28 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -284,7 +284,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
                 whileHover={{ y: -6, transition: { type: 'spring', stiffness: 400 } }}
                 className={`${
                   isWide ? 'md:col-span-8' : 'md:col-span-4'
-                } glass-card p-8 rounded-3xl relative overflow-hidden group flex flex-col justify-between text-left rtl:text-right`}
+                } glass-card p-5 sm:p-8 rounded-3xl relative overflow-hidden group flex flex-col justify-between text-left rtl:text-right`}
               >
                 <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:text-primary/10 transition-colors pointer-events-none">
                   <span className="material-symbols-outlined text-7xl">{cat.icon}</span>
@@ -319,8 +319,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenCvModal })
       </section>
 
       {/* Dynamic Stat Section */}
-      <section className="mt-32 border-y border-white/10 py-16 bg-surface-container-lowest/50 relative overflow-hidden">
-        <div className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop flex flex-wrap justify-around gap-10 sm:gap-16 text-center relative z-10">
+      <section className="mt-20 sm:mt-32 border-y border-white/10 py-12 sm:py-16 bg-surface-container-lowest/50 relative overflow-hidden">
+        <div className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}

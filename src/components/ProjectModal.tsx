@@ -12,10 +12,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
   if (!project) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl max-h-[85vh] bg-[var(--bg-card)] text-[var(--text-main)] border border-[var(--border-color)] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 my-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 md:p-10 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="project-modal-dialog relative w-full max-w-3xl bg-[var(--bg-card)] text-[var(--text-main)] border border-[var(--border-color)] rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 my-auto">
         {/* Top Header / Close Button */}
-        <div className="relative aspect-video w-full overflow-hidden bg-[var(--bg-card-sub)] shrink-0">
+        <div className="project-modal-media relative w-full overflow-hidden bg-[var(--bg-card-sub)] shrink-0">
           <img
             src={project.imageUrl}
             alt={project.imageAlt}
@@ -33,7 +33,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             </svg>
           </button>
 
-          <div className="absolute bottom-4 left-6 right-6 text-left rtl:text-right">
+          <div className="absolute bottom-3 sm:bottom-4 left-4 right-4 sm:left-6 sm:right-6 text-left rtl:text-right">
             <div className="flex flex-wrap gap-2 mb-2">
               <span className="project-image-tag px-3 py-1 rounded-full text-xs font-headline font-bold uppercase tracking-wider inline-block shadow-md">
                 {t.projectsPage.categories[project.category] || project.category}
@@ -60,7 +60,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
         </div>
 
         {/* Modal Scroll Content */}
-        <div className="p-6 sm:p-10 overflow-y-auto space-y-6 text-left rtl:text-right flex-1">
+        <div className="p-5 sm:p-10 overflow-y-auto overscroll-contain space-y-6 text-left rtl:text-right flex-1 min-h-0">
           <div>
             <h3 className="font-mono-code text-xs uppercase font-bold tracking-widest text-[var(--text-accent)] mb-2">
               {t.projectModal.overview}
@@ -86,13 +86,13 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             </div>
           </div>
 
-          <div className="border-t border-[var(--border-color)] pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2 text-xs text-[var(--text-sub)] font-mono-code">
+          <div className="border-t border-[var(--border-color)] pt-6 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
+            <div className="flex items-center gap-2 text-xs text-[var(--text-sub)] font-mono-code min-w-0">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-accent)]" aria-hidden="true">
                 <rect x="3" y="4" width="18" height="16" rx="2" />
                 <path d="m7 9 3 3-3 3M13 15h4" />
               </svg>
-              <span>{t.projectModal.primaryLanguage}: <strong className="text-[var(--text-main)]">{project.language}</strong></span>
+              <span className="break-words">{t.projectModal.primaryLanguage}: <strong className="text-[var(--text-main)]">{project.language}</strong></span>
             </div>
 
             <a

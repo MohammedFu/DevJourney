@@ -18,7 +18,7 @@ export const CvModal: React.FC<CvModalProps> = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-8 cv-modal-overlay">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-5 md:p-8 cv-modal-overlay">
           {/* Backdrop Blur */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -34,17 +34,17 @@ export const CvModal: React.FC<CvModalProps> = ({ isOpen, onClose }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-            className="relative w-full max-w-5xl h-[92vh] sm:h-[90vh] bg-surface text-on-surface border border-outline-variant/30 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-10 backdrop-blur-xl cv-modal-container"
+            className="relative w-full max-w-5xl bg-surface text-on-surface border border-outline-variant/30 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden z-10 backdrop-blur-xl cv-modal-container"
           >
             {/* Modal Header Controls Bar (Hidden during Print) */}
-            <div className="flex justify-between items-center px-6 md:px-8 py-4 bg-transparent border-b border-outline-variant/30 shrink-0 z-20 cv-modal-header">
-              <div className="flex items-center gap-3">
+            <div className="flex justify-between items-center gap-3 px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-transparent border-b border-outline-variant/30 shrink-0 z-20 cv-modal-header">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <span className="material-symbols-outlined text-primary text-2xl">badge</span>
-                <h2 className="font-headline text-lg sm:text-xl font-bold text-on-surface">
+                <h2 className="font-headline text-base sm:text-xl font-bold text-on-surface truncate">
                   {t.cvModal.title}
                 </h2>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex shrink-0 items-center gap-2 sm:gap-3">
                 <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
@@ -52,7 +52,7 @@ export const CvModal: React.FC<CvModalProps> = ({ isOpen, onClose }) => {
                   className="flex items-center gap-2 primary-btn-gradient px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer shadow-md"
                 >
                   <span className="material-symbols-outlined text-base">print</span>
-                  {t.cvModal.printBtn}
+                  <span className="hidden sm:inline">{t.cvModal.printBtn}</span>
                 </motion.button>
                 <button
                   onClick={onClose}
@@ -64,17 +64,17 @@ export const CvModal: React.FC<CvModalProps> = ({ isOpen, onClose }) => {
             </div>
 
             {/* Scrollable CV Document Canvas */}
-            <div className="p-6 sm:p-10 md:p-12 overflow-y-auto space-y-8 text-left rtl:text-right flex-1 cv-modal-scroll">
+            <div className="p-4 sm:p-10 md:p-12 overflow-y-auto overscroll-contain space-y-8 text-left rtl:text-right flex-1 min-h-0 cv-modal-scroll">
               {/* Profile Header */}
               <div className="border-b border-outline-variant/30 pb-6 pt-2">
-                <h1 className="font-headline-xl text-headline-xl sm:text-[40px] font-bold text-on-surface mb-2">
+                <h1 className="font-headline-xl text-3xl sm:text-[40px] leading-tight break-words font-bold text-on-surface mb-2">
                   {t.hero.name || portfolioData.personal.name}
                 </h1>
                 <p className="text-primary font-headline-md text-base sm:text-lg font-bold mb-4">
                   {t.hero.title || portfolioData.personal.title}
                 </p>
-                <div className="flex flex-wrap gap-5 text-label-sm font-label-sm text-on-surface-variant">
-                  <span className="flex items-center gap-1.5">
+                <div className="flex flex-wrap gap-3 sm:gap-5 text-label-sm font-label-sm text-on-surface-variant">
+                  <span className="flex min-w-0 items-center gap-1.5 break-all">
                     <span className="material-symbols-outlined text-base text-primary">mail</span>
                     {portfolioData.personal.email}
                   </span>
@@ -150,7 +150,7 @@ export const CvModal: React.FC<CvModalProps> = ({ isOpen, onClose }) => {
                   {portfolioData.education.map((edu) => {
                     const locEdu = t.educationData?.[edu.id] || edu;
                     return (
-                      <div key={edu.id} className="bg-transparent p-5 rounded-2xl border border-outline-variant/30 cv-section-block">
+                      <div key={edu.id} className="bg-transparent p-4 sm:p-5 rounded-2xl border border-outline-variant/30 cv-section-block">
                         <h4 className="text-headline-md font-headline-md text-on-surface">{locEdu.degree}</h4>
                         <p className="text-body-md text-on-surface-variant mt-1">{locEdu.institution} ({locEdu.period})</p>
                         {locEdu.grade && (
