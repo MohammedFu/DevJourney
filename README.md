@@ -81,13 +81,23 @@ DevJourney/
    ```bash
    npm run dev
    ```
-   Open your browser at `http://localhost:5173`.
+   Open your browser at `http://127.0.0.1:5180`.
 
 4. **Build for production**:
    ```bash
    npm run build
    ```
    The production-ready output will be compiled into the `dist/` directory.
+
+### Contact form email delivery
+
+The contact form sends submissions to `mohammedalsanhani2@gmail.com` through
+[FormSubmit](https://formsubmit.co/documentation). After publishing the updated
+site, submit the form once and open the FormSubmit activation email in that
+Gmail inbox to confirm the address. Check Spam if the activation email is not
+in the inbox. FormSubmit holds submissions until the form is activated; the
+website can only confirm that FormSubmit accepted a submission, not that Gmail
+delivered it. After activation, send a second test and verify it arrives.
 
 ---
 

@@ -4,9 +4,11 @@ import { portfolioData } from '../data/portfolioData';
 import { useApp } from '../context/AppContext';
 
 export const ContactPage: React.FC = () => {
-  const { t } = useApp();
+  const { t, isRtl } = useApp();
   const [sanaaTime, setSanaaTime] = useState<string>('');
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,18 +34,45 @@ export const ContactPage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    setTimeout(() => {
-      setFormSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        subject: 'Project Collaboration',
-        message: '',
+    if (isSubmitting) return;
+
+    const honeypot = new FormData(e.currentTarget).get('_honey');
+    if (honeypot) return;
+
+    setIsSubmitting(true);
+    setSubmissionError(false);
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${portfolioData.personal.email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject,
+          message: formData.message.trim(),
+          _subject: `Portfolio contact: ${formData.subject}`,
+          _template: 'table',
+          _honey: '',
+        }),
       });
-    }, 4000);
+
+      const result: { success?: boolean | string } = await response.json();
+      if (!response.ok || (result.success !== true && result.success !== 'true')) {
+        throw new Error('Contact form service rejected the message');
+      }
+
+      setFormSubmitted(true);
+    } catch {
+      setSubmissionError(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -90,6 +119,7 @@ export const ContactPage: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
+                role="status"
                 className="p-5 sm:p-8 rounded-xl bg-primary/10 border border-primary/30 text-center space-y-4 my-auto"
               >
                 <span className="material-symbols-outlined text-primary text-5xl">
@@ -103,9 +133,27 @@ export const ContactPage: React.FC = () => {
                   {formData.name}
                   {t.contactPage.messageReceivedEnd}
                 </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({ name: '', email: '', subject: 'Project Collaboration', message: '' });
+                    setFormSubmitted(false);
+                  }}
+                  className="text-primary font-bold underline underline-offset-4"
+                >
+                  {t.contactPage.sendAnother}
+                </button>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                <input
+                  type="text"
+                  name="_honey"
+                  autoComplete="off"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  className="absolute -left-[9999px] h-px w-px opacity-0"
+                />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-label-sm font-label-sm text-on-surface-variant uppercase block">
@@ -113,7 +161,9 @@ export const ContactPage: React.FC = () => {
                     </label>
                     <input
                       type="text"
+                      name="name"
                       required
+                      maxLength={120}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder={t.contactPage.namePlaceholder}
@@ -126,7 +176,9 @@ export const ContactPage: React.FC = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
                       required
+                      maxLength={254}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder={t.contactPage.emailPlaceholder}
@@ -140,6 +192,7 @@ export const ContactPage: React.FC = () => {
                     {t.contactPage.subjectLabel}
                   </label>
                   <select
+                    name="subject"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full bg-surface-variant/40 border border-outline-variant/30 rounded-xl px-4 py-3.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-on-surface text-body-md appearance-none"
@@ -156,7 +209,9 @@ export const ContactPage: React.FC = () => {
                     {t.contactPage.messageLabel}
                   </label>
                   <textarea
+                    name="message"
                     required
+                    maxLength={5000}
                     rows={5}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -165,15 +220,39 @@ export const ContactPage: React.FC = () => {
                   ></textarea>
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                {submissionError && (
+                  <p role="alert" className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-on-surface">
+                    {t.contactPage.sendError}{' '}
+                    <a
+                      href={`mailto:${portfolioData.personal.email}`}
+                      className="font-bold text-primary underline underline-offset-2"
+                    >
+                      {t.contactPage.emailFallback}
+                    </a>
+                  </p>
+                )}
+
+                <button
                   type="submit"
-                  className="primary-gradient-btn w-full py-4 rounded-xl font-bold text-headline-md flex items-center justify-center gap-3 shadow-lg cursor-pointer"
+                  disabled={isSubmitting}
+                  aria-busy={isSubmitting}
+                  className="primary-gradient-btn w-full py-4 rounded-xl font-bold text-headline-md flex items-center justify-center gap-3 shadow-lg cursor-pointer hover:scale-[1.02] active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 disabled:hover:scale-100"
                 >
-                  <span>{t.contactPage.sendButton}</span>
-                  <span className="material-symbols-outlined">send</span>
-                </motion.button>
+                  <span>{isSubmitting ? t.contactPage.sendingButton : t.contactPage.sendButton}</span>
+                  {isSubmitting ? (
+                    <span aria-hidden="true" className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  ) : (
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="h-5 w-5 shrink-0"
+                      style={{ transform: isRtl ? 'scaleX(-1)' : undefined }}
+                    >
+                      <path d="M3 20V14L11 12L3 10V4L22 12L3 20Z" />
+                    </svg>
+                  )}
+                </button>
               </form>
             )}
           </div>
