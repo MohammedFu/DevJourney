@@ -73,16 +73,16 @@ export const ContactPage: React.FC = () => {
       </section>
 
       {/* Bento Layout Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch text-left rtl:text-right">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch text-left rtl:text-right">
         {/* Contact Form Section (7 cols) */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="lg:col-span-7 glass-card p-8 md:p-10 rounded-2xl relative overflow-hidden group flex flex-col justify-between"
+          className="lg:col-span-7 glass-card p-5 sm:p-8 md:p-10 rounded-2xl relative overflow-hidden group flex flex-col justify-between"
         >
           <div className="relative z-10">
-            <h2 className="text-headline-lg font-headline-lg mb-8 text-on-surface">
+            <h2 className="text-headline-lg font-headline-lg mb-6 sm:mb-8 text-on-surface">
               {t.contactPage.formTitle}
             </h2>
 
@@ -90,7 +90,7 @@ export const ContactPage: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-8 rounded-xl bg-primary/10 border border-primary/30 text-center space-y-4 my-auto"
+                className="p-5 sm:p-8 rounded-xl bg-primary/10 border border-primary/30 text-center space-y-4 my-auto"
               >
                 <span className="material-symbols-outlined text-primary text-5xl">
                   check_circle
@@ -187,7 +187,7 @@ export const ContactPage: React.FC = () => {
           className="lg:col-span-5 flex flex-col justify-between gap-6"
         >
           {/* Direct Connections Card */}
-          <div className="glass-card-raised p-8 rounded-2xl flex-1 flex flex-col justify-between">
+          <div className="glass-card-raised p-5 sm:p-8 rounded-2xl flex-1 flex flex-col justify-between">
             <div>
               <h2 className="text-headline-md font-headline-md mb-6 text-on-surface">
                 {t.contactPage.directConn}
@@ -199,7 +199,7 @@ export const ContactPage: React.FC = () => {
                   href={portfolioData.personal.linkedIn}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
+                  className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
                 >
                   <div className="w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
                     <span className="material-symbols-outlined text-2xl">alternate_email</span>
@@ -220,7 +220,7 @@ export const ContactPage: React.FC = () => {
                   href={portfolioData.personal.gitHub}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
+                  className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
                 >
                   <div className="w-11 h-11 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary flex-shrink-0">
                     <span className="material-symbols-outlined text-2xl">terminal</span>
@@ -239,7 +239,7 @@ export const ContactPage: React.FC = () => {
                 {/* Email */}
                 <a
                   href={`mailto:${portfolioData.personal.email}`}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
+                  className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
                 >
                   <div className="w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
                     <span className="material-symbols-outlined text-2xl">mail</span>
@@ -260,7 +260,7 @@ export const ContactPage: React.FC = () => {
                 {/* Phone */}
                 <a
                   href={`tel:${portfolioData.personal.phone}`}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
+                  className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-outline-variant/20 hover:border-primary/40 group min-w-0"
                 >
                   <div className="w-11 h-11 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary flex-shrink-0">
                     <span className="material-symbols-outlined text-2xl">call</span>
@@ -282,8 +282,8 @@ export const ContactPage: React.FC = () => {
           </div>
 
           {/* Sana'a Local Time Widget */}
-          <div className="glass-card p-6 rounded-2xl border border-white/10 flex items-center justify-between">
-            <div>
+          <div className="glass-card p-5 sm:p-6 rounded-2xl border border-white/10 flex items-center justify-between gap-4">
+            <div className="min-w-0">
               <p className="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider mb-1">
                 {t.contactPage.localTime}
               </p>

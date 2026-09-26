@@ -31,20 +31,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-xl transition-colors duration-300">
-      <nav className="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 max-w-container-max-width mx-auto">
+      <nav className="flex justify-between items-center gap-2 px-3 sm:px-margin-mobile md:px-margin-desktop h-16 sm:h-20 max-w-container-max-width mx-auto">
         {/* Brand Logo */}
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => handleNavClick('home')}
-          className="text-headline-md font-headline-md font-bold tracking-tighter text-primary flex items-center gap-2.5"
+          className="min-w-0 text-base sm:text-xl xl:text-headline-md font-headline-md font-bold tracking-tighter text-primary flex items-center gap-2"
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
-          <span>{t.nav.brand}</span>
+          <span className="w-2.5 h-2.5 shrink-0 rounded-full bg-primary animate-pulse"></span>
+          <span className="site-brand-label">{t.nav.brand}</span>
         </motion.button>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-4 xl:gap-8">
           {navItems.map((item) => {
             const isActive = activePage === item.id;
             return (
@@ -64,14 +64,15 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Controls: Language Toggle + Theme Toggle + Action Button */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-2 xl:gap-3">
           {/* Language Toggle Button */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleLanguage}
             title="Toggle Language (English / العربية)"
-            className="flex items-center gap-1.5 bg-surface-container text-on-surface px-3.5 py-2 rounded-lg border border-outline-variant/30 text-label-sm font-label-sm font-bold transition-all hover:border-primary shadow-sm cursor-pointer"
+            aria-label={language === 'en' ? 'Switch language to Arabic' : 'Switch language to English'}
+            className="flex items-center gap-1.5 bg-surface-container text-on-surface px-3 py-2 rounded-lg border border-outline-variant/30 text-label-sm font-label-sm font-bold transition-all hover:border-primary shadow-sm cursor-pointer"
           >
             <span className="material-symbols-outlined text-base text-primary">translate</span>
             <span>{language === 'en' ? 'عربي' : 'EN'}</span>
@@ -83,6 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             whileTap={{ scale: 0.95 }}
             onClick={toggleTheme}
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
             className="p-2 bg-surface-container text-on-surface rounded-lg border border-outline-variant/30 flex items-center justify-center transition-all hover:border-primary shadow-sm cursor-pointer"
           >
             <span className="material-symbols-outlined text-lg text-primary">
@@ -95,24 +97,26 @@ export const Navbar: React.FC<NavbarProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
             onClick={onOpenCvModal}
-            className="primary-btn-gradient text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-lg font-bold hover:brightness-110 active:scale-95 transition-all shadow-lg cursor-pointer"
+            className="primary-btn-gradient text-on-primary font-label-md text-label-md px-4 xl:px-6 py-2.5 rounded-lg font-bold hover:brightness-110 active:scale-95 transition-all shadow-lg cursor-pointer whitespace-nowrap"
           >
             {t.nav.downloadCv}
           </motion.button>
         </div>
 
         {/* Mobile Toggle Group */}
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2 lg:hidden">
           <button
             onClick={toggleLanguage}
-            className="px-2.5 py-1 text-label-sm font-label-sm font-bold bg-surface-container text-on-surface border border-outline-variant/30 rounded-lg"
+            aria-label={language === 'en' ? 'Switch language to Arabic' : 'Switch language to English'}
+            className="min-w-11 min-h-11 px-2 text-label-sm font-label-sm font-bold bg-surface-container text-on-surface border border-outline-variant/30 rounded-lg"
           >
             {language === 'en' ? 'عربي' : 'EN'}
           </button>
 
           <button
             onClick={toggleTheme}
-            className="p-1.5 text-on-surface bg-surface-container border border-outline-variant/30 rounded-lg"
+            aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+            className="w-11 h-11 p-1.5 text-on-surface bg-surface-container border border-outline-variant/30 rounded-lg"
           >
             <span className="material-symbols-outlined text-xl text-primary">
               {theme === 'dark' ? 'light_mode' : 'dark_mode'}
@@ -122,7 +126,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle Navigation Menu"
-            className="text-on-surface p-2 hover:text-primary focus:outline-none"
+            aria-expanded={mobileMenuOpen}
+            className="w-11 h-11 text-on-surface p-2 hover:text-primary focus:outline-none"
           >
             <span className="material-symbols-outlined text-2xl">
               {mobileMenuOpen ? 'close' : 'menu'}
@@ -139,7 +144,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden bg-surface/90 border-b border-outline-variant/30 px-margin-mobile py-6 flex flex-col gap-3 shadow-2xl backdrop-blur-xl"
+            className="mobile-nav-panel lg:hidden overflow-y-auto bg-surface/95 border-b border-outline-variant/30 px-margin-mobile py-5 flex flex-col gap-3 shadow-2xl backdrop-blur-xl"
           >
             {navItems.map((item) => (
               <button

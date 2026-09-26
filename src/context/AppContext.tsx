@@ -17,19 +17,38 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+const readPreference = <T extends string>(
+  key: string,
+  allowedValues: readonly T[],
+  fallback: T,
+): T => {
+  try {
+    const savedValue = window.localStorage.getItem(key) as T | null;
+    return savedValue && allowedValues.includes(savedValue) ? savedValue : fallback;
+  } catch {
+    // Storage can be unavailable in private browsing or a locked-down webview.
+    return fallback;
+  }
+};
+
+const savePreference = (key: string, value: string) => {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // The preference still applies to this session when persistent storage fails.
+  }
+};
+
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<ThemeMode>(() => {
-    const saved = localStorage.getItem('devjourney_theme');
-    return (saved as ThemeMode) || 'dark';
+    return readPreference('devjourney_theme', ['light', 'dark'], 'light');
   });
 
   const [language, setLanguage] = useState<LanguageMode>(() => {
-    const saved = localStorage.getItem('devjourney_language');
-    return (saved as LanguageMode) || 'en';
+    return readPreference('devjourney_language', ['en', 'ar'], 'en');
   });
 
   useEffect(() => {
-    localStorage.setItem('devjourney_theme', theme);
     const root = document.documentElement;
     if (theme === 'light') {
       root.classList.add('light');
@@ -38,10 +57,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       root.classList.add('dark');
       root.classList.remove('light');
     }
+
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', theme === 'light' ? '#fbf8ff' : '#081425');
   }, [theme]);
 
   useEffect(() => {
-    localStorage.setItem('devjourney_language', language);
     const root = document.documentElement;
     const dir = language === 'ar' ? 'rtl' : 'ltr';
     root.setAttribute('dir', dir);
@@ -49,11 +71,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [language]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    savePreference('devjourney_theme', nextTheme);
+    setTheme(nextTheme);
   };
 
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === 'en' ? 'ar' : 'en'));
+    const nextLanguage = language === 'en' ? 'ar' : 'en';
+    savePreference('devjourney_language', nextLanguage);
+    setLanguage(nextLanguage);
   };
 
   const t = translations[language];

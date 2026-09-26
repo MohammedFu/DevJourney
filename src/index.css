@@ -46,8 +46,8 @@
   --spacing-base: 8px;
 }
 
-/* Mohammed Signature Dark Theme (Default) */
-:root, :root.dark {
+/* Mohammed Signature Dark Theme */
+:root.dark {
   --surface: #081425;
   --surface-dim: #081425;
   --surface-bright: #2f3a4c;
@@ -96,8 +96,8 @@
   --btn-text-color: #3e1975;
 }
 
-/* Mohammed Signature Light Theme */
-:root.light {
+/* Mohammed Signature Light Theme (Default) */
+:root, :root.light {
   --surface: #fbf8ff;
   --surface-dim: #d8d8f1;
   --surface-bright: #fbf8ff;
@@ -152,6 +152,32 @@ body {
   font-family: var(--font-sans);
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  min-height: 100dvh;
+}
+
+img,
+svg,
+canvas {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
 }
 
 /* Typography Utility Classes matching Stitch Design System */
@@ -334,8 +360,58 @@ body {
 .hero-name-single-line {
   max-width: 100%;
   white-space: nowrap;
-  font-size: clamp(1.35rem, 7.5cqw, 3.25rem);
+  font-size: clamp(1.3rem, 7vw, 3.25rem);
+  font-size: clamp(1.3rem, 6.8cqw, 3.25rem);
   line-height: 1.15;
+}
+
+/* Apply the gradient to the changing glyphs themselves. This avoids the
+   transparent nested-text rendering bug in iOS Safari. */
+.typewriter-shell {
+  display: inline-grid;
+  max-width: 100%;
+  vertical-align: baseline;
+  unicode-bidi: isolate;
+}
+
+.typewriter-sizer,
+.typewriter-content {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+.typewriter-sizer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.typewriter-content {
+  display: inline-flex;
+  align-items: baseline;
+  /* Grid start follows the text direction: left in English, right in Arabic. */
+  justify-self: start;
+}
+
+.typewriter-glyphs {
+  display: inline-block;
+  color: var(--text-accent);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.typewriter-cursor {
+  margin-inline-start: 0.08em;
+  color: var(--text-accent);
+  -webkit-text-fill-color: var(--text-accent);
+  font-weight: 300;
+  animation: typewriterBlink 0.9s steps(1, end) infinite;
+}
+
+@keyframes typewriterBlink {
+  0%, 48% { opacity: 1; }
+  49%, 100% { opacity: 0; }
 }
 
 .primary-btn-gradient, .primary-gradient-btn {
@@ -364,6 +440,44 @@ body {
   background: radial-gradient(circle, rgba(94, 65, 208, 0.1) 0%, rgba(94, 237, 253, 0.05) 50%, transparent 100%);
 }
 
+.hero-portrait {
+  height: clamp(260px, 78vw, 400px);
+}
+
+.project-modal-media {
+  aspect-ratio: 16 / 9;
+  max-height: 18rem;
+}
+
+/* `vh` is the fallback for older iOS releases; `dvh` follows the visible
+   viewport when Safari's address bar expands or collapses. */
+.mobile-nav-panel {
+  max-height: calc(100vh - 4rem);
+  max-height: calc(100dvh - 4rem);
+}
+
+.project-modal-dialog {
+  max-height: calc(100vh - 1rem);
+  max-height: calc(100dvh - 1rem);
+}
+
+.cv-modal-container {
+  height: calc(100vh - 1rem);
+  height: calc(100dvh - 1rem);
+}
+
+@media (min-width: 640px) {
+  .project-modal-dialog {
+    max-height: 88vh;
+    max-height: 88dvh;
+  }
+
+  .cv-modal-container {
+    height: 90vh;
+    height: 90dvh;
+  }
+}
+
 .timeline-line {
   background: linear-gradient(to bottom, var(--primary), transparent);
 }
@@ -372,6 +486,12 @@ body {
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   display: inline-block;
+  width: 1em;
+  max-width: 1em;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
   vertical-align: middle;
 }
 
@@ -429,6 +549,61 @@ body {
 
 .animate-float {
   animation: floatSlow 5s ease-in-out infinite;
+}
+
+@media (max-width: 767px) {
+  .text-headline-xl {
+    font-size: clamp(2rem, 10vw, 2.5rem);
+    line-height: 1.15;
+  }
+
+  .text-headline-lg {
+    font-size: clamp(1.5rem, 7.5vw, 1.75rem);
+    line-height: 1.25;
+  }
+
+  .text-headline-md {
+    font-size: clamp(1.2rem, 6vw, 1.4rem);
+    line-height: 1.35;
+  }
+
+  .portfolio-blur,
+  .portfolio-glow {
+    width: min(400px, 100vw);
+    height: min(400px, 100vw);
+  }
+}
+
+@media (max-width: 380px) {
+  .site-brand-label {
+    max-width: 7.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-height: 700px) {
+  .project-modal-media {
+    height: 35dvh;
+    min-height: 8rem;
+    aspect-ratio: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* The CV owns its printable safe area so browser margin presets cannot clip content. */

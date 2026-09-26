@@ -20,13 +20,13 @@ export const ExperiencePage: React.FC = () => {
   };
 
   return (
-    <div className="relative pt-24 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto">
+    <div className="relative pt-24 pb-16 sm:pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto">
       {/* Signature background glow accents */}
       <div className="portfolio-glow top-20 -left-20"></div>
       <div className="portfolio-glow bottom-20 -right-20"></div>
 
       {/* Header Section */}
-      <header className="mb-16 text-left rtl:text-right">
+      <header className="mb-10 sm:mb-16 text-left rtl:text-right">
         <span className="text-primary font-label-sm uppercase tracking-widest block mb-4">
           {t.experiencePage.badge}
         </span>
@@ -44,8 +44,8 @@ export const ExperiencePage: React.FC = () => {
       {/* Main Bento Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Career Timeline (Col Span 7) */}
-        <section className="lg:col-span-7 glass-card p-8 md:p-12 rounded-xl relative overflow-hidden text-left rtl:text-right">
-          <h2 className="text-headline-lg font-headline-lg mb-12 flex items-center gap-3 text-on-surface">
+        <section className="lg:col-span-7 glass-card p-5 sm:p-8 md:p-12 rounded-xl relative overflow-hidden text-left rtl:text-right">
+          <h2 className="text-headline-lg font-headline-lg mb-8 sm:mb-12 flex items-center gap-3 text-on-surface">
             <span
               className="material-symbols-outlined text-primary text-3xl"
               style={{ fontVariationSettings: "'FILL' 1" }}
@@ -127,7 +127,7 @@ export const ExperiencePage: React.FC = () => {
         {/* Sidebar: Education & Certs (Col Span 5) */}
         <div className="lg:col-span-5 grid grid-cols-1 gap-8 text-left rtl:text-right">
           {/* Education Card */}
-          <section className="glass-card p-8 rounded-xl relative group">
+          <section className="glass-card p-5 sm:p-8 rounded-xl relative group">
             <div className="absolute top-0 right-0 rtl:left-0 rtl:right-auto p-8 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
               <span
                 className="material-symbols-outlined text-[64px] text-primary"
@@ -170,7 +170,7 @@ export const ExperiencePage: React.FC = () => {
           </section>
 
           {/* Certifications Card */}
-          <section className="glass-card p-8 rounded-xl">
+          <section className="glass-card p-5 sm:p-8 rounded-xl">
             <h2 className="text-headline-md font-headline-md mb-8 flex items-center gap-3 text-on-surface">
               <span className="material-symbols-outlined text-primary text-2xl">verified</span>
               {t.experiencePage.certificationsTitle}
@@ -183,13 +183,13 @@ export const ExperiencePage: React.FC = () => {
                 return (
                   <div
                     key={cert.id || index}
-                    className="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors border border-outline-variant/20"
+                    className="flex items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors border border-outline-variant/20 min-w-0"
                   >
                     <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <span className="material-symbols-outlined text-primary">workspace_premium</span>
                     </div>
-                    <div>
-                      <h4 className="text-body-md font-bold text-on-surface">{locCert.title}</h4>
+                    <div className="min-w-0">
+                      <h4 className="text-body-md font-bold text-on-surface break-words">{locCert.title}</h4>
                       <p className="text-label-sm text-on-surface-variant">
                         {locCert.issuer} • {locCert.period}
                       </p>
@@ -201,8 +201,8 @@ export const ExperiencePage: React.FC = () => {
           </section>
 
           {/* Dynamic Achievement Stats Cards */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="glass-card p-6 rounded-xl text-center">
+          <div className="grid grid-cols-1 min-[360px]:grid-cols-2 gap-4">
+            <div className="glass-card p-4 sm:p-6 rounded-xl text-center">
               <div className="text-headline-lg font-headline-lg text-primary mb-1">
                 {portfolioData.personal.stats.projectsShipped}+
               </div>
@@ -211,7 +211,7 @@ export const ExperiencePage: React.FC = () => {
               </p>
             </div>
 
-            <div className="glass-card p-6 rounded-xl text-center">
+            <div className="glass-card p-4 sm:p-6 rounded-xl text-center">
               <div className="text-headline-lg font-headline-lg text-secondary mb-1">
                 {portfolioData.experiences.length * 3}+
               </div>

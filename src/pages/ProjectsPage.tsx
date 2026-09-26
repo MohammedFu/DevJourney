@@ -123,7 +123,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
                 >
                   <div className="glass-card rounded-xl overflow-hidden h-full flex flex-col hover:shadow-[0_0_40px_rgba(142,205,255,0.15)] transition-all duration-500 group-hover:-translate-y-1">
                     {/* Image Thumbnail Header */}
-                    <div className="relative h-64 md:h-80 w-full overflow-hidden">
+                    <div className="relative h-56 sm:h-64 md:h-80 w-full overflow-hidden">
                       <img
                         src={project.imageUrl}
                         alt={project.imageAlt || project.title}
@@ -132,7 +132,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-black/10"></div>
-                      <div className="absolute top-6 left-6 rtl:right-6 rtl:left-auto flex max-w-[calc(100%-3rem)] flex-wrap gap-2">
+                      <div className="absolute top-4 sm:top-6 left-4 sm:left-6 rtl:right-4 sm:rtl:right-6 rtl:left-auto flex max-w-[calc(100%-2rem)] sm:max-w-[calc(100%-3rem)] flex-wrap gap-2">
                         <span className="project-image-tag text-label-sm px-3 py-1 rounded-full backdrop-blur-md">
                           {t.projectsPage.categories[project.category] || project.category}
                         </span>
@@ -159,7 +159,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
                     </div>
 
                     {/* Card Content Body */}
-                    <div className="p-8 flex flex-col flex-grow">
+                    <div className="p-5 sm:p-8 flex flex-col flex-grow min-w-0">
                       <div className="flex justify-between items-start mb-4 gap-4">
                         <div>
                           <h3 className="text-headline-md font-headline-md text-on-surface group-hover:text-primary transition-colors mb-2">
@@ -219,7 +219,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="glass-card rounded-2xl p-10 md:p-14 text-center relative overflow-hidden bg-gradient-to-br from-surface-container to-surface-container-lowest"
+          className="glass-card rounded-2xl p-6 sm:p-10 md:p-14 text-center relative overflow-hidden bg-gradient-to-br from-surface-container to-surface-container-lowest"
         >
           <h2 className="text-headline-lg font-headline-lg text-on-surface mb-4">
             {t.projectsPage.ctaTitle}
@@ -231,7 +231,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => onNavigate('contact')}
-            className="primary-btn-gradient text-on-primary px-8 py-4 rounded-lg font-bold text-label-md font-label-md shadow-lg hover:brightness-110 transition-all inline-flex items-center gap-2 cursor-pointer"
+            className="primary-btn-gradient w-full sm:w-auto justify-center text-on-primary px-6 sm:px-8 py-4 rounded-lg font-bold text-label-md font-label-md shadow-lg hover:brightness-110 transition-all inline-flex items-center gap-2 cursor-pointer"
           >
             {t.projectsPage.ctaButton}
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

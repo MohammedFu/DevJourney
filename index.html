@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" dir="ltr" class="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg" />
@@ -8,7 +8,27 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#081425" />
+    <meta name="theme-color" content="#fbf8ff" />
+    <script>
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem('devjourney_theme');
+          const savedLanguage = localStorage.getItem('devjourney_language');
+
+          if (savedTheme === 'dark') {
+            document.documentElement.classList.replace('light', 'dark');
+            document.querySelector('meta[name="theme-color"]').content = '#081425';
+          }
+
+          if (savedLanguage === 'ar') {
+            document.documentElement.lang = 'ar';
+            document.documentElement.dir = 'rtl';
+          }
+        } catch {
+          // Keep the light, English defaults when storage is unavailable.
+        }
+      })();
+    </script>
     <meta name="application-name" content="Mohammed Dev" />
     <title>Mohammed Al-Sanhani | Software Developer Portfolio</title>
     <!-- Google Fonts -->
